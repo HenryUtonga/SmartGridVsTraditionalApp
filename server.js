@@ -48,62 +48,50 @@ const systemMessage = {
   role: "system",
   content: "You are an expert energy analyst generating investment reports in clean HTML. Return only HTML with no markdown."
 };
+
 const userMessage = {
   role: "user",
   content: `
-You are an investment report generator. Your task is to return a clean HTML report based on the metrics below.
+<div class="report-container">
+  <div class="report-title">Investment Report: Electricity Grid Analysis</div>
 
-⚠️ You must return only HTML using these tags: <div>, <h3>, <h4>, <p>, <ul>, <li>, <strong>. DO NOT use markdown syntax (like #, ##, **, etc). DO NOT return any explanation — just the HTML content block.
+  <section class="section">
+    <h3>1. Executive Summary</h3>
+    <p>Write a short paragraph summarizing the investment case and final recommendation.</p>
+  </section>
 
-Insert these metrics into the report in a table format:
-- New Plant CapEx: $${m.Cplant.toLocaleString()}
-- Smart Grid CapEx: $${m.Csmart.toLocaleString()}
-- Annual Revenue (Plant): $${m.Rplant.toLocaleString()}
-- Annual Revenue (Smart Grid): $${m.revenuesmart.toLocaleString()}
-- ROI (Plant): ${m.ROIplant.toFixed(2)}%
-- ROI (Smart Grid): ${m.ROIsmart.toFixed(2)}%
-- NPV (Plant): $${m.NPVplant.toFixed(2)}
-- NPV (Smart Grid): $${m.NPVsmart.toFixed(2)}
-- Recommendation: ${decision}
+  <section class="section">
+    <h3>2. Financial Analysis</h3>
 
-Use this structure exactly:
+    <h4>2.1 Investment Metrics</h4>
+    <ul>
+      <li><strong>New Plant CapEx:</strong> $${m.Cplant.toLocaleString()}</li>
+      <li><strong>Smart Grid CapEx:</strong> $${m.Csmart.toLocaleString()}</li>
+      <li><strong>Annual Revenue (Plant):</strong> $${m.Rplant.toLocaleString()}</li>
+      <li><strong>Annual Revenue (Smart Grid):</strong> $${m.revenuesmart.toLocaleString()}</li>
+      <li><strong>ROI (Plant):</strong> ${m.ROIplant.toFixed(2)}%</li>
+      <li><strong>ROI (Smart Grid):</strong> ${m.ROIsmart.toFixed(2)}%</li>
+      <li><strong>NPV (Plant):</strong> $${m.NPVplant.toFixed(2)}</li>
+      <li><strong>NPV (Smart Grid):</strong> $${m.NPVsmart.toFixed(2)}</li>
+    </ul>
 
-<div class="report-title">Investment Report: Electricity Grid Analysis</div>
+    <h4>2.2 Interpretation</h4>
+    <p>Explain what the ROI and NPV values imply in terms of financial feasibility.</p>
+  </section>
 
-<h3>1. Executive Summary</h3>
-<p>Write a 4–5 sentence paragraph summarizing the financial outlook and the recommended action based on the metrics provided.</p>
+  <section class="section">
+    <h3>3. Recommendation</h3>
+    <p><strong>${decision}</strong> Justify this based on current values and trends.</p>
+  </section>
 
-<h3>2. Financial Analysis</h3>
-
-<h4>2.1 Investment Metrics Overview</h4>
-<ul>
-  <li><strong>New Plant CapEx:</strong> $${m.Cplant.toLocaleString()}</li>
-  <li><strong>Smart Grid CapEx:</strong> $${m.Csmart.toLocaleString()}</li>
-  <li><strong>Annual Revenue (Plant):</strong> $${m.Rplant.toLocaleString()}</li>
-  <li><strong>Annual Revenue (Smart Grid):</strong> $${m.revenuesmart.toLocaleString()}</li>
-  <li><strong>ROI (Plant):</strong> ${m.ROIplant.toFixed(2)}%</li>
-  <li><strong>ROI (Smart Grid):</strong> ${m.ROIsmart.toFixed(2)}%</li>
-  <li><strong>NPV (Plant):</strong> $${m.NPVplant.toFixed(2)}</li>
-  <li><strong>NPV (Smart Grid):</strong> $${m.NPVsmart.toFixed(2)}</li>
-</ul>
-
-<h4>2.2 ROI and NPV Interpretation</h4>
-<p>Interpret the significance of the ROI and NPV values above. Indicate whether they reflect financial viability or risk.</p>
-
-<h4>2.3 Implications</h4>
-<ul>
-  <li>Discuss the importance of future revenue generation potential</li>
-  <li>Reflect on CapEx risk vs. reward</li>
-  <li>Mention any strategic market or infrastructure benefits</li>
-</ul>
-
-<h3>3. Recommendation</h3>
-<p><strong>${decision}</strong> Explain why this recommendation makes sense given the inputs.</p>
-
-<h3>4. Additional Considerations</h3>
-<p>Briefly mention infrastructure readiness, market conditions, political risks, or data limitations.</p>
+  <section class="section">
+    <h3>4. Strategic Considerations</h3>
+    <p>Mention key factors like infrastructure, political climate, funding options, or capacity.</p>
+  </section>
+</div>
 `
 };
+
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
