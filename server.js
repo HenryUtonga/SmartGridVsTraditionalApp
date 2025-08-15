@@ -87,7 +87,7 @@ Here is the required structure:
       model: "gpt-4o-mini",
       messages: [systemMessage, userMessage],
       temperature: 0.7,
-      max_tokens: 1000
+      max_tokens: 2000
     });
 
     const report = completion.choices[0].message.content;
