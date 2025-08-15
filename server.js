@@ -42,7 +42,7 @@ Use these values:
 - ROI (Smart Grid): ${m.ROIsmart.toFixed(2)}%
 - NPV (Plant): $${m.NPVplant.toFixed(2)}
 - NPV (Smart Grid): $${m.NPVsmart.toFixed(2)}
-- Recommendation: ${decision}
+
 
 ⚠️ Return ONLY HTML using <div>, <h3>, <h4>, <p>, <table>, <tr>, <td>, <strong>. No markdown. No explanations.
 
@@ -71,13 +71,13 @@ Here is the required structure:
   </table>
 
   <h4 style="margin-top:20px;color:#2c3e50;">2.2 Interpretation</h4>
-  <p>${interpretationText}</p>
+   <p>Interpret the ROI and NPV values in your own words, highlighting financial feasibility, strengths, and weaknesses of both options. Use at least 4–6 sentences.</p>
 
   <h3 style="color:#1e3a8a;border-bottom:2px solid #e0e0e0;padding-bottom:6px;">3. Recommendation</h3>
-  <p><strong>${decision}</strong> This recommendation aligns with both short-term returns and long-term infrastructure priorities.</p>
+  <p>Based on your interpretation above, provide a clear and well-reasoned recommendation with 4–5 full sentences. Justify it using the financial data.</p>
 
   <h3 style="color:#1e3a8a;border-bottom:2px solid #e0e0e0;padding-bottom:6px;">4. Strategic Considerations</h3>
-  <p>Infrastructure readiness, funding access, market volatility, and political support all impact the feasibility of both options. Continued monitoring of regulatory trends is essential for smart grid viability in the future.</p>
+ <p>Discuss other important factors like infrastructure, energy policy, funding access, and long-term resilience in 3–4 sentences.</p>
 </div>
 `
 };
