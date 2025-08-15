@@ -44,7 +44,7 @@ app.post("/api/report", async (req, res) => {
     }
 
     // Build prompt
-content: `
+const prompt = : `
 <div class="report-container">
   <div class="report-title">Investment Report: Electricity Grid Analysis</div>
 
