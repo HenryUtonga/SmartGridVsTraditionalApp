@@ -1,47 +1,77 @@
-/* === Base Page Styling === */
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+  background-color: #f9f9f9;
   padding: 20px;
-  background-color: #f0f0f0;
+  color: #333;
 }
 
-input {
-  margin: 5px;
+.report-container {
+  background-color: #ffffff;
+  max-width: 800px;
+  margin: auto;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-/* === Report Title Block === */
 .report-title {
-  background-color: #d0f0c0;
-  text-align: center;
+  background-color: #e0f7fa;
   font-size: 24px;
   font-weight: bold;
+  text-align: center;
   padding: 16px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   border-radius: 6px;
+  color: #006064;
 }
 
-/* === Section Headings === */
-#decisionText h3,
-#decisionText h4 {
-  text-decoration: underline;
+.section {
+  margin-bottom: 32px;
+}
+
+h3 {
   color: #1e3a8a;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 6px;
+}
+
+h4 {
   margin-top: 20px;
+  color: #2c3e50;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+ul li {
+  margin: 6px 0;
   text-align: left;
 }
 
-/* === Paragraphs and Lists === */
-#decisionText p,
-#decisionText li {
-  font-size: 14px;
+p {
   line-height: 1.6;
-  font-family: 'Segoe UI', sans-serif;
-  text-align: center;
+  text-align: left;
 }
 
-/* === Lists === */
-#decisionText ul {
-  list-style-position: inside;
-  padding-left: 0;
-  margin: 10px auto;
-  text-align: center;
+.metrics-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.metrics-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.metrics-table td:first-child {
+  font-weight: bold;
+  color: #1e3a8a;
+}
+
+.metrics-table td:last-child {
+  text-align: right;
 }
