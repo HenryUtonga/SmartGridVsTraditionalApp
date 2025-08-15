@@ -54,7 +54,7 @@ Here is the required structure:
   </div>
 
   <h3 style="color:#1e3a8a;border-bottom:2px solid #e0e0e0;padding-bottom:6px;">1. Executive Summary</h3>
-  <p>The analysis compares investment options between building a new power plant and upgrading to a smart grid. Based on current ROI and NPV metrics, <strong>${decision}</strong> This report provides detailed insights into financial performance and strategic value of each option.</p>
+<p>Based on your interpretation above, provide a clear and well-reasonedExecutive Summary with 4–5 full sentences.</p>
 
   <h3 style="color:#1e3a8a;border-bottom:2px solid #e0e0e0;padding-bottom:6px;">2. Financial Analysis</h3>
 
