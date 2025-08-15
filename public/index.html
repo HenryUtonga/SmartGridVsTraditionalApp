@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Smart Grid vs Power Plant Calculator</title>
+  <meta charset="utf-8" />
+</head>
+
+<body>
+
+<!-- ─────────────────────────  HEADER  ───────────────────────── -->
+<div style="display:flex;justify-content:space-between;align-items:center;margin:10px;">
+  <label style="font-size:40px;font-weight:bold;">Smart Grid vs&nbsp;Power Plant Calculator</label>
+  <div>
+    <button onclick="location.href='about.html'"   style="padding:10px 20px;font-size:16px;">About Us</button>
+    <button onclick="location.href='references.html'" style="padding:10px 20px;font-size:16px;">References</button>
+  </div>
+</div>
+
+<img src="https://cdn.glitch.global/1e8e23b7-541a-4481-980e-8a48b8a50174/edited.jpg?v=1747363939916"
+     style="width:100%;height:30%;" alt="Background image"><br>
+
+<!-- ─────────────────────────  INPUT 4-COLUMN LAYOUT  ───────────────────────── -->
+<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:20px;">
+
+  <!-- Column 1 : New-plant CAPEX -->
+  <div style="flex:1 1 200px;border:1px solid #ccc;padding:15px;border-radius:8px;">
+    <h4>Cost of Building a New Power Plant</h4>
+
+    <label>Additional power required (MW):
+      <input type="number" id="Additionalcapacity" style="width:100%;">
+    </label><br><br>
+
+    <label style="display:block; margin-bottom:8px;">
+      <input type="checkbox" id="useCustomCost" />
+      I want to enter my own cost per MW
+    </label>
+
+    <div id="customCostContainer" style="display:none;">
+      <label>Custom cost per MW ($):
+        <input type="number" id="CustomCost" style="width:100%;" />
+      </label>
+      <br><br>
+    </div>
+
+    <div id="defaultCostContainer">
+      <label for="plantType" style="width:100%;">Select Power Plant Type:</label>
+      <select id="plantType">
+        <option value="7500000">Nuclear</option>
+        <option value="2000000">Fossil</option>
+        <option value="2750000">Coal</option>
+        <option value="950000">Natural Gas</option>
+        <option value="1600000">Wind (Onshore)</option>
+        <option value="4000000">Wind (Offshore)</option>
+        <option value="1000000">Solar</option>
+        <option value="3750000">Geothermal</option>
+        <option value="3000000">Hydropower</option>
+      </select>
+      <br><br>
+
+      <div id="regionContainer">
+        <label for="region" style="width:100%;">Select the Region in which this project is set to deploy:</label>
+        <select id="region">
+          <option value="1.00">North America</option>
+          <option value="1.10">Western Europe</option>
+          <option value="0.90">Eastern Europe</option>
+          <option value="1.75">Sub-Saharan Africa</option>
+          <option value="0.70">South Asia</option>
+          <option value="0.95">East Asia</option>
+          <option value="0.85">Middle East/North Africa</option>
+          <option value="0.80">Latin America</option>
+        </select>
+      </div>
+      <br><br>
+    </div> 
+
+    <label><strong>Result:</strong>
+      <output id="NewPlantResult">--</output>
+    </label>
+  </div>
+
+  <!-- Column 2 : Smart-grid CAPEX -->
+  <div style="flex:1 1 200px;border:1px solid #ccc;padding:15px;border-radius:8px;">
+    <h4>Cost of Upgrading to a Smart Grid</h4>
+
+    <label>Cost of comms infrastructure ($):
+      <input type="number" id="Costinfra" style="width:100%;"></label><br><br>
+
+    <label>Number of customers:
+      <input type="number" id="Numberofcust" style="width:100%;"></label><br><br>
+
+    <label>Cost per smart meter ($):
+      <input type="number" id="Costmeters" style="width:100%;"></label><br><br>
+
+    <label><strong>Result:</strong>
+      <output id="UgradePlantResult">--</output>
+    </label>
+  </div>
+
+  <!-- Column 3 : New-plant annual revenue -->
+  <div style="flex:1 1 200px;border:1px solid #ccc;padding:15px;border-radius:8px;">
+    <h4>Annual Revenue - New Power Plant</h4>
+
+    <label>Hours per day:
+      <input type="number" id="Hoursperday" style="width:100%;"></label><br><br>
+
+    <label>Tariff rate ($/kWh):
+      <input type="number" id="Tariff" style="width:100%;"></label><br><br>
+
+    <label><strong>Result:</strong>
+      <output id="NewPlantRevenueResult">--</output>
+    </label>
+
+  </div>
+
+  <!-- Column 4 : Smart-grid annual savings -->
+  <div style="flex:1 1 200px;border:1px solid #ccc;padding:15px;border-radius:8px;">
+    <h4>Annual Revenue after Savings - Smart Grid</h4>
+
+    <label>Loss savings (%) :
+      <input type="number" id="Ssavings" style="width:100%;"></label><br><br>
+
+    <label><strong>Savings Result:</strong>
+      <output id="AnnualSavingsResult">--</output>
+    </label>
+     <br><br>
+    <label><strong>Revenue Result:</strong>
+      <output id="Smartrevenue">--</output>
+    </label>
+  </div>
+</div>
+
+<!-- ─────────────────────────  SUMMARY ROW  ───────────────────────── -->
+<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:20px;margin-top:30px;">
+
+
+  <div style="flex:1 1 200px;border:2px solid #ccc;padding:15px;border-radius:8px;">
+     <label>Enter the discount rate and the life span of the project below :</label><br><br>  
+    
+    <label>Discount(%):
+      <input type="number" id="Discount" style="width:10%;"></label><br><br>  
+   
+    <label>Life Span(Y):
+      <input type="number" id="Lifespan" style="width:10%;"></label><br><br>  
+  </div>
+  
+  <div style="flex:1 1 200px;border:2px solid #4caf50;padding:15px;border-radius:8px;background:#f1f8f5;">
+    <h4>Return on Investment (ROI)</h4>
+    <output id="roiOutput" style="font-size:24px;font-weight:bold;">--</output>
+  </div>
+
+  <div style="flex:1 1 200px;border:2px solid #2196f3;padding:15px;border-radius:8px;background:#f0f7ff;">
+    <h4>Net Present Value (NPV)</h4>
+    <output id="npvOutput" style="font-size:24px;font-weight:bold;">--</output>
+  </div>
+
+</div>
+
+<div style="flex:2 1 420px;border:2px solid #ff9800;padding:25px;border-radius:8px;background:#fff8e1;margin-top:30px;">
+  <h4>Decision</h4>
+  <p id="decisionText" style="font-size:18px;font-weight:bold;color:#333;white-space:pre-wrap;">
+    Decision summary will appear here based on ROI and NPV results.
+  </p>
+  <button id="downloadDecisionPdf" style="display:none;margin-top:10px;">Download Decision as PDF</button>
+</div>
+
+<!-- ─────────────────────────  ACTION BUTTONS  ───────────────────────── -->
+<div style="text-align:center;margin-top:20px;">
+  <button onclick="calculate()">Compare Options</button>
+  <button onclick="clearForm()">Clear</button>
+</div>
+
+<!-- include PDF libraries and calculator script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="calculator.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>References and Calculations</title>
+  <meta charset="utf-8">
+</head>
+<body style="font-family: Arial, sans-serif; padding: 20px;">
+  <h1>Methodological Framework and Cost Estimation Principles for the Smart Grid vs. Power Plant Decision-Making Calculator</h1>
+  <h2>1. Introduction</h2>
+  This document describes the reasons, mathematical equations and data needed to develop a tool for comparing an upgrade to an existing grid with building a new power plant. This model considers capital expenditure, previously gained revenue, loss savings and measures investment option performance by calculating ROI and NPV. Prices are adjusted to account for differences in economies among countries.
+  <h2>2. Formula Derivation and Assumptions</h2>
+  <h3>2.1. Cost of Building a New Power Plant</h3>
+  
+    <strong>Formula:</strong> <br><br>
+  
+  <strong>Cplant = Pnew × Ctype × RCAF</strong><br><br>
+The formula allows you to estimate how much it would cost to build a new power plant. Pnew shows the total extra capacity, the type of plant (solar, coal, nuclear, etc.) is shown by Ctype and RCAF makes adjustments for regional economy. As labor, logistics and material prices for a power plant differ depending on the region, the RCAF ensures that the calculation reflects the costs in that region. For example, RCAF greater than 1 is needed in Sub-Saharan Africa since their infrastructure is not as good as in North America.<br><br>
+  Where:<br>
+
+  <div style="margin-left: 40px;"><li>Pnew = additional power capacity required (in MW)</li></div><br>
+
+  <div style="margin-left: 40px;"><li>Ctype = cost per MW based on power technology</li></div><br>
+
+  <div style="margin-left: 40px;"><li>RCAF = Regional Cost Adjustment Factor (index adjusting for local cost variability)</li></div><br>
+<strong>Estimated Cost per Power Generation Technology</strong><br>
+The table below is the cost for construction of different types of power plants. Depending on technologies, different types of power plants have different costs.
+<head>
+  <style>
+    table {
+      width: 60%;
+      margin: 40px auto;
+      border-collapse: collapse;
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 12px 20px;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    caption {
+      caption-side: top;
+      font-size: 20px;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <table style="margin-left: 0;">
+    <thead>
+      <tr>
+        <th>Technology</th>
+        <th>Cost Estimate (USD)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Nuclear</td><td>$7,500,000</td></tr>
+      <tr><td>Fossil</td><td>$2,000,000</td></tr>
+      <tr><td>Coal</td><td>$2,750,000</td></tr>
+      <tr><td>Natural Gas</td><td>$950,000</td></tr>
+      <tr><td>Wind (Onshore)</td><td>$1,600,000</td></tr>
+      <tr><td>Wind (Offshore)</td><td>$4,000,000</td></tr>
+      <tr><td>Solar</td><td>$1,000,000</td></tr>
+      <tr><td>Geothermal</td><td>$3,750,000</td></tr>
+      <tr><td>Hydropower</td><td>$3,000,000</td></tr>
+    </tbody>
+  </table>
+  <i>Source : Lazard (2023). Levelized Cost of Energy Analysis – Version 17.0 <br></i>
+  <i>Source : IEA and NEA (2020). Projected Costs of Generating Electricity (2020 Edition)<br></i><br>
+</body>
+    
+<strong>Regional Cost Adjustment Factors (RCAF)</strong><br>
+This table shows different weights placed on different regions in accordance to their economic standing.
+<head>
+  <style>
+    table {
+      width: 60%;
+      margin: 40px auto;
+      border-collapse: collapse;
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 12px 20px;
+      text-align: left;
+    }
+    th {
+      background-color: #eaeaea;
+    }
+    caption {
+      caption-side: top;
+      font-size: 20px;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <table style="margin-left: 0;">
+    <thead>
+      <tr>
+        <th>Region</th>
+        <th>RCAF</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>North America</td><td>1.00</td></tr>
+      <tr><td>Western Europe</td><td>1.10</td></tr>
+      <tr><td>Eastern Europe</td><td>0.90</td></tr>
+      <tr><td>Sub-Saharan Africa</td><td>1.75</td></tr>
+      <tr><td>South Asia</td><td>0.70</td></tr>
+      <tr><td>East Asia</td><td>0.95</td></tr>
+      <tr><td>Middle East/North Africa</td><td>0.85</td></tr>
+      <tr><td>Latin America</td><td>0.80</td></tr>
+    </tbody>
+  </table> 
+  
+ 
+  <i>Source : United Nations Industrial Development Organization (UNIDO). (2017). 
+    Manual for cost estimation and economic evaluation of projects. 
+    https://www.unido.org/sites/default/files/files/2020-01/P9_DES_002-09.pdf<br></i>
+  <i>Source :  International. (2008). Recommended practice no. 18R-97: Cost estimate classification 
+    system—as applied in engineering, procurement, and construction for the process industries (pp. A-2–A-3). AACE International. 
+    https://web.aacei.org/docs/default-source/toc/toc_18r-97.pdf<br></i>
+  
+<h2>2. Cost of Upgrading to a Smart Grid</h2>
+ 
+<strong>Formula:</strong> <br><br>
+<strong>Csmart = Cinfra + (Nmeters × Cmeters)</strong> <br><br>
+This formular calculates the cost of upgrading the old grid to a smart grid. The fixed cost of building the infrastructure (including control systems) for the smart grid is Cinfra and the cost to supply smart meters to customers is found by multiplying the Nmeters and Cmeters. It matters because forming a smart grid requires both initial construction and distribution of devices to individuals and the cost increases with the number of people involved.<br><br>
+Where:<br>
+
+<div style="margin-left: 40px;"><li>Cinfra = infrastructure cost (communication system, sensors, software)</li></div><br>
+
+<div style="margin-left: 40px;"><li>Nmeters = number of customers</li></div><br>
+
+<div style="margin-left: 40px;"><li>Cmeters = cost per smart meter </li></div><br>
+    
+    
+<h2>3. Annual Revenue from a New Power Plant</h2>
+ <strong>Formula:</strong> <br><br>
+<strong>Rplant = Pnew × H × Ttariff</strong> <br><br>
+This formular calculates the yearly income from a built power plant. The new capacity is called Pnew, H represents the total operating hours in a year and Ttariff shows the hourly cost of electricity at the selling point. Once you multiply these variables, you obtain the electricity sold and the amount of money made from it. With this calculation, investors see how much income the plant is predicted to generate as it is normally put to use.<br><br>
+Where:<br>
+
+<div style="margin-left: 40px;"><li> H = operating hours per year</li></div><br>
+
+<div style="margin-left: 40px;"><li>Ttariff = tariff per kilowatt-hour</li></div><br>
+    
+<h2>4. Annual Savings from Smart Grid</h2>
+    
+<strong>Formula:</strong> <br><br>
+<strong>Ssmart = Pnew × H × Ttariff × Ssavings</strong> <br><br>
+This formular calculates the yearly savings after using a smart grid. Pnew means current electricity demand, H signifies the annual number of operating hours and Ttariff is the unit electricity tariff. The smart grid is expected to stop a percentage of losses (both technical and non-technical) and this is shown by the variable Ssavings. By using smart grids, energy theft is lessened, as are technical losses and inefficiencies which helps save money.<br><br>
+Where:
+
+<div style="margin-left: 40px;"><li>Pnew = current demand</li></div><br>
+
+<div style="margin-left: 40px;"><li>Ssavings = percentage of loss reduction from smart monitoring (typical: 5–15%)</li></div><br>
+    
+<h2>5. Investment Evaluation Metrics</h2>
+    
+  <h3>4.1. Return on Investment (ROI)</h3>
+ <strong>Formula:</strong> <br><br>
+
+<div style="margin-left: 40px;"><li>New Plant: ROIplant = (Rplant / Cplant) × 100<br></li></div><br>
+
+<div style="margin-left: 40px;"><li>Smart Grid: ROIsmart = (Ssmart / Csmart) × 100<br></li></div><br>
+
+This shows profitability based on yearly return relative to initial investment.
+
+<h3>5.2. Net Present Value (NPV)</h3>
+ <strong>Formula:</strong> <br><br>
+NPV = ∑ (Rt / (1 + r)^t) - C<br><br>
+
+Where:
+
+<div style="margin-left: 40px;"><li>Rt = revenue or savings per year</li></div><br>
+
+<div style="margin-left: 40px;"><li>r = discount rate (default: 8%)</li></div><br>
+
+<div style="margin-left: 40px;"><li>L = lifespan (default: 20 years)</li></div><br>
+
+<div style="margin-left: 40px;"><li>C = capital cost (Cplant or Csmart)</li></div><br>
+
+This accounts for time value of money to determine long-term investment merit.
+
+
+</body>
+    
+<h2>6. Application of Formulas in the Web Tool</h2>
+<h3>Users select:<br></h3>
+
+Technology type → determines Ctype<br>
+
+Region → determines RCAF<br>
+
+Enter demand, cost inputs, tariff, lifespan, and discount rate<br><br>
+
+
+<h3>The tool calculates:<br></h3>
+
+
+Total capital cost for both options<br>
+
+
+Annual financial impact<br>
+
+
+ROI and NPV<br><br>
+
+
+
+<h3>A final decision rule based on:<br></h3>
+
+
+If NPVsmart is Greater NPVplant and ROIsmart is greater ROIplant → Smart Grid<br>
+
+
+Otherwise → Build a New Power Plant
+    
+
+    
+  <h2>Key References</h2>
+  <ul>
+    <li>IEA and NEA. (2020). <i>Projected Costs of Generating Electricity (2020 Edition)</i>. OECD Publishing. https://doi.org/10.1787/5830c6a4-en</li>
+    <li>Annual Energy Outlook 2022 <i>Cost and Performance Characteristics of New Generating Technologies</i> (2022),  https://www.eia.gov/outlooks/aeo/assumptions/pdf/table_8.2.pdf</li>
+    <li>International Energy Agency. (2023). *World energy outlook 2023*. IEA. [https://www.iea.org/reports/world-energy-outlook-2023](https://www.iea.org/reports/world-energy-outlook-2023)</li>
+
+    <li>International Energy Agency, and Nuclear Energy Agency. (2020). <i>Projected costs of generating electricity</i> (2020 ed.). OECD Publishing. [https://doi.org/10.1787/5830c6a4-en](https://doi.org/10.1787/5830c6a4-en)</li>
+
+    <li>International Renewable Energy Agency. (2024). <i>Renewable power generation costs in 2023</i> IRENA. https://www.oecd-ilibrary.org/energy/projected-costs-of-generating-electricity_5830c6a4-en</li>
+
+    <li>Lazard. (2023). <i>Levelized cost of energy analysis</i> (Version 17.0) [PDF]. Lazard LLC. https://www.lazard.com/media/2ozoovyg/lazards-lcoeplus-april-2023.pdf</li>
+
+    <li>National Renewable Energy Laboratory. (2023). <i>2023 annual technology baseline (ATB)</i>. NREL. [https://atb.nrel.gov](https://atb.nrel.gov)</li>
+
+    <li>U.S. Department of Energy, Office of Nuclear Energy. (2022). <i>Advanced nuclear reactors cost study</i> (DOE/NE-0147). [https://doi.org/10.2172/1893226](https://doi.org/10.2172/1893226)</li>
+
+    <li>U.S. Energy Information Administration. (2024). <i>Annual energy outlook 2024</i>. EIA. [https://www.eia.gov/outlooks/aeo/](https://www.eia.gov/outlooks/aeo/)</li>
+
+    <!-- Add more references here -->
+  </ul>
+  <p><a href="index.html">← Back to Calculator</a></p>
+</body>
+</html>
