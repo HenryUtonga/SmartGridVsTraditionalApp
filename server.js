@@ -22,20 +22,10 @@ app.post("/api/report", async (req, res) => {
   try {
     const m = req.body.metrics;
     if (!m) return res.status(400).json({ error: "Missing metrics in request body" });
-
-    const decision =
-      m.decision ||
-      (m.NPVsmart > m.NPVplant && m.ROIsmart > m.ROIplant
-        ? "✅ Upgrade to a Smart Grid is the better choice (higher ROI & NPV)."
-        : "⚠️ Building a new plant is financially preferable with current inputs.");
-    const interpretationText =
-  (m.NPVsmart > m.NPVplant && m.ROIsmart > m.ROIplant)
-    ? "The smart grid shows a stronger financial profile with a higher ROI and NPV. This indicates greater long-term value despite potentially higher initial costs. The traditional plant is less attractive financially under current conditions."
-    : "The new plant shows a stronger financial profile with a higher ROI and NPV. This suggests better short- and medium-term returns, making it the more viable financial choice at present.";
-
+    
     const systemMessage = {
       role: "system",
-      content: "You are a professional analyst who returns clean inline-styled HTML investment reports. Do not return markdown or explanations."
+      content: "You are an expert financial analyst writing investment reports in HTML format. You must provide insightful, well-structured paragraphs interpreting financial metrics and making reasoned investment recommendations. Do not use markdown, only HTML. Use professional language."
     };
 
    const userMessage = {
