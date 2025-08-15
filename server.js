@@ -46,7 +46,7 @@ app.post("/api/report", async (req, res) => {
     // Build prompt
 const systemMessage = {
   role: "system",
-  content: "You are an expert energy analyst generating investment reports in clean HTML. Return only HTML with no markdown."
+  content: "You are an expert energy analyst generating investment reports in clean HTML. Return only HTML with no markdown. dont add uneccessary spaced. Section 2.1. Investment Metrics whould be in a table"
 };
 
 const userMessage = {
