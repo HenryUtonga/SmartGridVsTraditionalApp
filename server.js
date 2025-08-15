@@ -77,7 +77,8 @@ Here is the required structure:
   <p>Based on your interpretation above, provide a clear and well-reasoned recommendation with 4–5 full sentences. Justify it using the financial data.</p>
 
   <h3 style="color:#1e3a8a;border-bottom:2px solid #e0e0e0;padding-bottom:6px;">4. Strategic Considerations</h3>
- <p>Discuss other important factors like infrastructure, energy policy, funding access, and long-term resilience in 3–4 sentences.</p>
+  <p>Discuss other important factors like infrastructure, energy policy, funding access, and long-term resilience in 3–4 sentences.</p> 
+
 </div>
 `
 };
