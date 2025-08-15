@@ -45,11 +45,6 @@ app.post("/api/report", async (req, res) => {
 
     // Build prompt
 
-const systemMessage = {
-  role: "system",
-  content: "You are an expert energy analyst generating investment reports in clean HTML. Return only HTML with no markdown."
-};
-
 const userMessage = {
   role: "user",
   content: `
@@ -57,7 +52,7 @@ You are an investment report generator. Your task is to return a clean HTML repo
 
 ⚠️ You must return only HTML using these tags: <div>, <h3>, <h4>, <p>, <ul>, <li>, <strong>. DO NOT use markdown syntax (like #, ##, **, etc). DO NOT return any explanation — just the HTML content block.
 
-Insert these metrics into the report:
+Insert these metrics into the report in a table format:
 - New Plant CapEx: $${m.Cplant.toLocaleString()}
 - Smart Grid CapEx: $${m.Csmart.toLocaleString()}
 - Annual Revenue (Plant): $${m.Rplant.toLocaleString()}
@@ -106,8 +101,6 @@ Use this structure exactly:
 <p>Briefly mention infrastructure readiness, market conditions, political risks, or data limitations.</p>
 `
 };
-
-
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
