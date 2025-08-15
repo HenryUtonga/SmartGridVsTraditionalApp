@@ -60,7 +60,7 @@ Here is the required structure:
 
 <div style="max-width:800px;margin:auto;font-family:Segoe UI,Helvetica,sans-serif;background:#fff;padding:30px;border-radius:8px;box-shadow:0 0 12px rgba(0,0,0,0.05)">
   <div style="background:#d0f0c0;text-align:center;padding:16px;border-radius:6px;font-size:24px;font-weight:bold;">
-    Investment Report: SMART GRID vs NEW POWER PLANT ANALYSIS REPORT
+    INVESTIMENT REPORT: SMART GRID vs NEW POWER PLANT ANALYSIS REPORT
   </div>
 
   <h3 style="color:#1e3a8a;border-bottom:2px solid #e0e0e0;padding-bottom:6px;">1. Executive Summary</h3>
