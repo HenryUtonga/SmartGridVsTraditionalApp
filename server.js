@@ -74,7 +74,7 @@ Here is the required structure:
    <p>Interpret the ROI and NPV values in your own words, highlighting financial feasibility, strengths, and weaknesses of both options. Use at least 4–6 sentences.</p>
 
   <h3 style="color:#1e3a8a;border-bottom:2px solid #e0e0e0;padding-bottom:6px;">3. Recommendation</h3>
-  <p>Based on your interpretation above, provide a clear and well-reasoned recommendation with 4–5 full sentences. Justify it using the financial data.</p>
+  <p>Write here your recommendation paragraph using at least 4–5 sentences and justify it with the metrics above.</p>
 
   <h3 style="color:#1e3a8a;border-bottom:2px solid #e0e0e0;padding-bottom:6px;">4. Strategic Considerations</h3>
   <p>Discuss other important factors like infrastructure, energy policy, funding access, and long-term resilience in 3–4 sentences.</p> 
