@@ -57,40 +57,41 @@ const userMessage = {
 
   <section class="section">
     <h3>1. Executive Summary</h3>
-    <p>Write a short paragraph summarizing the investment case and final recommendation.</p>
+    <p>Write a concise paragraph summarizing the investment decision.</p>
   </section>
 
   <section class="section">
     <h3>2. Financial Analysis</h3>
 
     <h4>2.1 Investment Metrics</h4>
-    <ul>
-      <li><strong>New Plant CapEx:</strong> $${m.Cplant.toLocaleString()}</li>
-      <li><strong>Smart Grid CapEx:</strong> $${m.Csmart.toLocaleString()}</li>
-      <li><strong>Annual Revenue (Plant):</strong> $${m.Rplant.toLocaleString()}</li>
-      <li><strong>Annual Revenue (Smart Grid):</strong> $${m.revenuesmart.toLocaleString()}</li>
-      <li><strong>ROI (Plant):</strong> ${m.ROIplant.toFixed(2)}%</li>
-      <li><strong>ROI (Smart Grid):</strong> ${m.ROIsmart.toFixed(2)}%</li>
-      <li><strong>NPV (Plant):</strong> $${m.NPVplant.toFixed(2)}</li>
-      <li><strong>NPV (Smart Grid):</strong> $${m.NPVsmart.toFixed(2)}</li>
-    </ul>
+    <table class="metrics-table">
+      <tr><td><strong>New Plant CapEx</strong></td><td>$${m.Cplant.toLocaleString()}</td></tr>
+      <tr><td><strong>Smart Grid CapEx</strong></td><td>$${m.Csmart.toLocaleString()}</td></tr>
+      <tr><td><strong>Annual Revenue (Plant)</strong></td><td>$${m.Rplant.toLocaleString()}</td></tr>
+      <tr><td><strong>Annual Revenue (Smart Grid)</strong></td><td>$${m.revenuesmart.toLocaleString()}</td></tr>
+      <tr><td><strong>ROI (Plant)</strong></td><td>${m.ROIplant.toFixed(2)}%</td></tr>
+      <tr><td><strong>ROI (Smart Grid)</strong></td><td>${m.ROIsmart.toFixed(2)}%</td></tr>
+      <tr><td><strong>NPV (Plant)</strong></td><td>$${m.NPVplant.toFixed(2)}</td></tr>
+      <tr><td><strong>NPV (Smart Grid)</strong></td><td>$${m.NPVsmart.toFixed(2)}</td></tr>
+    </table>
 
     <h4>2.2 Interpretation</h4>
-    <p>Explain what the ROI and NPV values imply in terms of financial feasibility.</p>
+    <p>Interpret the ROI and NPV values in terms of financial feasibility and comparative performance.</p>
   </section>
 
   <section class="section">
     <h3>3. Recommendation</h3>
-    <p><strong>${decision}</strong> Justify this based on current values and trends.</p>
+    <p><strong>${decision}</strong> Justify the recommendation with key data points.</p>
   </section>
 
   <section class="section">
     <h3>4. Strategic Considerations</h3>
-    <p>Mention key factors like infrastructure, political climate, funding options, or capacity.</p>
+    <p>Mention infrastructure readiness, funding, market trends, and political risks briefly.</p>
   </section>
 </div>
 `
 };
+
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
