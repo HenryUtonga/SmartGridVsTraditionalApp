@@ -21,89 +21,86 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 app.post("/api/report", async (req, res) => {
   try {
     const m = req.body.metrics;
-    if (!m) return res.status(400).json({ error: "Missing metrics in request body" });
+    if (!m) {
+      return res.status(400).json({ error: "Missing metrics in request body" });
+    }
 
-    const decision =
-      m.decision ||
-      (m.NPVsmart > m.NPVplant && m.ROIsmart > m.ROIplant
+    // Decision logic
+    let decision = m.decision;
+    const isSmartBetter = m.NPVsmart > m.NPVplant && m.ROIsmart > m.ROIplant;
+    if (!decision) {
+      decision = isSmartBetter
         ? "✅ Upgrade to a Smart Grid is the better choice (higher ROI & NPV)."
-        : "⚠️ Building a new plant is financially preferable with current inputs.");
+        : "⚠️ Building a new plant is financially preferable with current inputs.";
+    }
+
+    const interpretationText = isSmartBetter
+      ? "The smart grid shows a stronger financial profile with a higher ROI and NPV. This indicates greater long-term value despite potentially higher initial costs. The traditional plant is less attractive financially under current conditions."
+      : "The new plant shows a stronger financial profile with a higher ROI and NPV. This suggests better short- and medium-term returns, making it the more viable financial choice at present.";
 
     const systemMessage = {
       role: "system",
-      content: "You are a professional analyst who returns clean inline-styled HTML investment reports. Do not return markdown or explanations."
+      content: "You are an expert energy analyst generating investment reports in clean HTML. Return only HTML with no markdown."
     };
 
-   const userMessage = {
-  role: "user",
-  content: `
-You are an expert energy investment analyst. Generate a clean HTML report **without using markdown**. Style the report **visually using inline CSS** (no external CSS needed). Format metrics in a **two-column HTML table** under Section 2.1.
+    const userMessage = {
+      role: "user",
+      content: `
+<div class="report-container">
+  <div class="report-title">Investment Report: Electricity Grid Analysis</div>
 
-Use these values:
-- New Plant CapEx: $${m.Cplant.toLocaleString()}
-- Smart Grid CapEx: $${m.Csmart.toLocaleString()}
-- Annual Revenue (Plant): $${m.Rplant.toLocaleString()}
-- Annual Revenue (Smart Grid): $${m.revenuesmart.toLocaleString()}
-- ROI (Plant): ${m.ROIplant.toFixed(2)}%
-- ROI (Smart Grid): ${m.ROIsmart.toFixed(2)}%
-- NPV (Plant): $${m.NPVplant.toFixed(2)}
-- NPV (Smart Grid): $${m.NPVsmart.toFixed(2)}
-- Recommendation: ${decision}
+  <section class="section">
+    <h3>1. Executive Summary</h3>
+    <p>Write a concise paragraph summarizing the investment decision.</p>
+  </section>
 
-⚠️ Return ONLY HTML using <div>, <h3>, <h4>, <p>, <table>, <tr>, <td>, <strong>. No markdown. No explanations.
+  <section class="section">
+    <h3>2. Financial Analysis</h3>
 
-Here is the required structure:
+    <h4>2.1 Investment Metrics</h4>
+    <table>
+      <tr><td><strong>New Plant CapEx</strong></td><td>$${m.Cplant.toLocaleString()}</td></tr>
+      <tr><td><strong>Smart Grid CapEx</strong></td><td>$${m.Csmart.toLocaleString()}</td></tr>
+      <tr><td><strong>Annual Revenue (Plant)</strong></td><td>$${m.Rplant.toLocaleString()}</td></tr>
+      <tr><td><strong>Annual Revenue (Smart Grid)</strong></td><td>$${m.revenuesmart.toLocaleString()}</td></tr>
+      <tr><td><strong>ROI (Plant)</strong></td><td>${m.ROIplant.toFixed(2)}%</td></tr>
+      <tr><td><strong>ROI (Smart Grid)</strong></td><td>${m.ROIsmart.toFixed(2)}%</td></tr>
+      <tr><td><strong>NPV (Plant)</strong></td><td>$${m.NPVplant.toFixed(2)}</td></tr>
+      <tr><td><strong>NPV (Smart Grid)</strong></td><td>$${m.NPVsmart.toFixed(2)}</td></tr>
+    </table>
 
-<div style="max-width:800px;margin:auto;font-family:Segoe UI,Helvetica,sans-serif;background:#fff;padding:30px;border-radius:8px;box-shadow:0 0 12px rgba(0,0,0,0.05)">
-  <div style="background:#d0f0c0;text-align:center;padding:16px;border-radius:6px;font-size:24px;font-weight:bold;">
-    Investment Report: Electricity Grid Analysis
-  </div>
+    <h4>2.2 Interpretation</h4>
+    <p>${interpretationText}</p>
+  </section>
 
-  <h3 style="color:#1e3a8a;border-bottom:2px solid #e0e0e0;padding-bottom:6px;">1. Executive Summary</h3>
-  <p>The analysis compares investment options between building a new power plant and upgrading to a smart grid. Based on current ROI and NPV metrics, <strong>${decision}</strong> This report provides detailed insights into financial performance and strategic value of each option.</p>
+  <section class="section">
+    <h3>3. Recommendation</h3>
+    <p><strong>${decision}</strong> Justify the recommendation with key data points.</p>
+  </section>
 
-  <h3 style="color:#1e3a8a;border-bottom:2px solid #e0e0e0;padding-bottom:6px;">2. Financial Analysis</h3>
-
-  <h4 style="margin-top:20px;color:#2c3e50;">2.1 Investment Metrics</h4>
-  <table style="width:100%;border-collapse:collapse;margin-top:10px;">
-    <tr><td style="padding:8px;border:1px solid #ccc;">New Plant CapEx</td><td style="padding:8px;border:1px solid #ccc;">$${m.Cplant.toLocaleString()}</td></tr>
-    <tr><td style="padding:8px;border:1px solid #ccc;">Smart Grid CapEx</td><td style="padding:8px;border:1px solid #ccc;">$${m.Csmart.toLocaleString()}</td></tr>
-    <tr><td style="padding:8px;border:1px solid #ccc;">Annual Revenue (Plant)</td><td style="padding:8px;border:1px solid #ccc;">$${m.Rplant.toLocaleString()}</td></tr>
-    <tr><td style="padding:8px;border:1px solid #ccc;">Annual Revenue (Smart Grid)</td><td style="padding:8px;border:1px solid #ccc;">$${m.revenuesmart.toLocaleString()}</td></tr>
-    <tr><td style="padding:8px;border:1px solid #ccc;">ROI (Plant)</td><td style="padding:8px;border:1px solid #ccc;">${m.ROIplant.toFixed(2)}%</td></tr>
-    <tr><td style="padding:8px;border:1px solid #ccc;">ROI (Smart Grid)</td><td style="padding:8px;border:1px solid #ccc;">${m.ROIsmart.toFixed(2)}%</td></tr>
-    <tr><td style="padding:8px;border:1px solid #ccc;">NPV (Plant)</td><td style="padding:8px;border:1px solid #ccc;">$${m.NPVplant.toFixed(2)}</td></tr>
-    <tr><td style="padding:8px;border:1px solid #ccc;">NPV (Smart Grid)</td><td style="padding:8px;border:1px solid #ccc;">$${m.NPVsmart.toFixed(2)}</td></tr>
-  </table>
-
-  <h4 style="margin-top:20px;color:#2c3e50;">2.2 Interpretation</h4>
-  <p>The new plant shows a stronger financial profile with a higher ROI and NPV. This indicates greater potential returns compared to the smart grid investment. The smart grid option, while innovative, presents a lower return at this time.</p>
-
-  <h3 style="color:#1e3a8a;border-bottom:2px solid #e0e0e0;padding-bottom:6px;">3. Recommendation</h3>
-  <p><strong>${decision}</strong> This recommendation aligns with both short-term returns and long-term infrastructure priorities.</p>
-
-  <h3 style="color:#1e3a8a;border-bottom:2px solid #e0e0e0;padding-bottom:6px;">4. Strategic Considerations</h3>
-  <p>Infrastructure readiness, funding access, market volatility, and political support all impact the feasibility of both options. Continued monitoring of regulatory trends is essential for smart grid viability in the future.</p>
+  <section class="section">
+    <h3>4. Strategic Considerations</h3>
+    <p>Mention infrastructure readiness, funding, market trends, and political risks briefly.</p>
+  </section>
 </div>
 `
-};
-
+    };
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [systemMessage, userMessage],
       temperature: 0.7,
-      max_tokens: 1000
+      max_tokens: 800
     });
 
     const report = completion.choices[0].message.content;
-    res.json({ report });
+    return res.json({ report });
   } catch (err) {
     console.error("Error in /api/report:", err);
-    res.status(500).json({ error: "Report generation failed" });
+    return res.status(500).json({ error: "Report generation failed" });
   }
 });
 
 app.listen(port, () => {
-  console.log(`🚀 Server running at http://localhost:${port}`);
+  console.log(`🚀 Server listening on http://localhost:${port}`);
 });
