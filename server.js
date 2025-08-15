@@ -44,14 +44,7 @@ app.post("/api/report", async (req, res) => {
     }
 
     // Build prompt
-const systemMessage = {
-  role: "system",
-  content: "You are an expert energy analyst generating investment reports in clean HTML. Return only HTML with no markdown."
-};
-
-const userMessage = {
-  role: "user",
-  content: `
+content: `
 <div class="report-container">
   <div class="report-title">Investment Report: Electricity Grid Analysis</div>
 
@@ -90,7 +83,7 @@ const userMessage = {
   </section>
 </div>
 `
-};
+
 
 
     const completion = await openai.chat.completions.create({
