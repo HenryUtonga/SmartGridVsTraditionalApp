@@ -34,11 +34,12 @@ app.post("/api/report", async (req, res) => {
       content: "You are a professional analyst who returns clean inline-styled HTML investment reports. Do not return markdown or explanations."
     };
 
-    const userMessage = {
-      role: "user",
-      content: `
-Generate a styled HTML report using only <div>, <h3>, <h4>, <p>, <table>, <tr>, <td>, <strong> tags. Use inline CSS for layout and styling. No markdown. Here's the data:
+   const userMessage = {
+  role: "user",
+  content: `
+You are an expert energy investment analyst. Generate a clean HTML report **without using markdown**. Style the report **visually using inline CSS** (no external CSS needed). Format metrics in a **two-column HTML table** under Section 2.1.
 
+Use these values:
 - New Plant CapEx: $${m.Cplant.toLocaleString()}
 - Smart Grid CapEx: $${m.Csmart.toLocaleString()}
 - Annual Revenue (Plant): $${m.Rplant.toLocaleString()}
@@ -49,48 +50,44 @@ Generate a styled HTML report using only <div>, <h3>, <h4>, <p>, <table>, <tr>, 
 - NPV (Smart Grid): $${m.NPVsmart.toFixed(2)}
 - Recommendation: ${decision}
 
-The report must follow this structure:
+⚠️ Return ONLY HTML using <div>, <h3>, <h4>, <p>, <table>, <tr>, <td>, <strong>. No markdown. No explanations.
 
-<div style="font-family:Segoe UI,Helvetica,sans-serif; background:#f9f9f9; padding:30px; color:#333;">
-  <div style="background:#d0f0c0; font-size:24px; font-weight:bold; text-align:center; padding:16px; border-radius:6px; margin-bottom:30px;">
+Here is the required structure:
+
+<div style="max-width:800px;margin:auto;font-family:Segoe UI,Helvetica,sans-serif;background:#fff;padding:30px;border-radius:8px;box-shadow:0 0 12px rgba(0,0,0,0.05)">
+  <div style="background:#d0f0c0;text-align:center;padding:16px;border-radius:6px;font-size:24px;font-weight:bold;">
     Investment Report: Electricity Grid Analysis
   </div>
 
-  <div style="margin-bottom:36px;">
-    <h3 style="color:#0b3d91; border-bottom:2px solid #ccc;">1. Executive Summary</h3>
-    <p>Write a short paragraph summarizing the investment case and final recommendation.</p>
-  </div>
+  <h3 style="color:#1e3a8a;border-bottom:2px solid #e0e0e0;padding-bottom:6px;">1. Executive Summary</h3>
+  <p>The analysis compares investment options between building a new power plant and upgrading to a smart grid. Based on current ROI and NPV metrics, <strong>${decision}</strong> This report provides detailed insights into financial performance and strategic value of each option.</p>
 
-  <div style="margin-bottom:36px;">
-    <h3 style="color:#0b3d91; border-bottom:2px solid #ccc;">2. Financial Analysis</h3>
-    <h4 style="color:#333;">2.1 Investment Metrics</h4>
-    <table style="width:100%; border-collapse:collapse;">
-      <tr><td><strong>New Plant CapEx:</strong></td><td>$${m.Cplant.toLocaleString()}</td></tr>
-      <tr><td><strong>Smart Grid CapEx:</strong></td><td>$${m.Csmart.toLocaleString()}</td></tr>
-      <tr><td><strong>Annual Revenue (Plant):</strong></td><td>$${m.Rplant.toLocaleString()}</td></tr>
-      <tr><td><strong>Annual Revenue (Smart Grid):</strong></td><td>$${m.revenuesmart.toLocaleString()}</td></tr>
-      <tr><td><strong>ROI (Plant):</strong></td><td>${m.ROIplant.toFixed(2)}%</td></tr>
-      <tr><td><strong>ROI (Smart Grid):</strong></td><td>${m.ROIsmart.toFixed(2)}%</td></tr>
-      <tr><td><strong>NPV (Plant):</strong></td><td>$${m.NPVplant.toFixed(2)}</td></tr>
-      <tr><td><strong>NPV (Smart Grid):</strong></td><td>$${m.NPVsmart.toFixed(2)}</td></tr>
-    </table>
+  <h3 style="color:#1e3a8a;border-bottom:2px solid #e0e0e0;padding-bottom:6px;">2. Financial Analysis</h3>
 
-    <h4 style="color:#333; margin-top:20px;">2.2 Interpretation</h4>
-    <p>Explain what the ROI and NPV values imply in terms of financial feasibility.</p>
-  </div>
+  <h4 style="margin-top:20px;color:#2c3e50;">2.1 Investment Metrics</h4>
+  <table style="width:100%;border-collapse:collapse;margin-top:10px;">
+    <tr><td style="padding:8px;border:1px solid #ccc;">New Plant CapEx</td><td style="padding:8px;border:1px solid #ccc;">$${m.Cplant.toLocaleString()}</td></tr>
+    <tr><td style="padding:8px;border:1px solid #ccc;">Smart Grid CapEx</td><td style="padding:8px;border:1px solid #ccc;">$${m.Csmart.toLocaleString()}</td></tr>
+    <tr><td style="padding:8px;border:1px solid #ccc;">Annual Revenue (Plant)</td><td style="padding:8px;border:1px solid #ccc;">$${m.Rplant.toLocaleString()}</td></tr>
+    <tr><td style="padding:8px;border:1px solid #ccc;">Annual Revenue (Smart Grid)</td><td style="padding:8px;border:1px solid #ccc;">$${m.revenuesmart.toLocaleString()}</td></tr>
+    <tr><td style="padding:8px;border:1px solid #ccc;">ROI (Plant)</td><td style="padding:8px;border:1px solid #ccc;">${m.ROIplant.toFixed(2)}%</td></tr>
+    <tr><td style="padding:8px;border:1px solid #ccc;">ROI (Smart Grid)</td><td style="padding:8px;border:1px solid #ccc;">${m.ROIsmart.toFixed(2)}%</td></tr>
+    <tr><td style="padding:8px;border:1px solid #ccc;">NPV (Plant)</td><td style="padding:8px;border:1px solid #ccc;">$${m.NPVplant.toFixed(2)}</td></tr>
+    <tr><td style="padding:8px;border:1px solid #ccc;">NPV (Smart Grid)</td><td style="padding:8px;border:1px solid #ccc;">$${m.NPVsmart.toFixed(2)}</td></tr>
+  </table>
 
-  <div style="margin-bottom:36px;">
-    <h3 style="color:#0b3d91; border-bottom:2px solid #ccc;">3. Recommendation</h3>
-    <p><strong>${decision}</strong> Justify this based on current values and trends.</p>
-  </div>
+  <h4 style="margin-top:20px;color:#2c3e50;">2.2 Interpretation</h4>
+  <p>The new plant shows a stronger financial profile with a higher ROI and NPV. This indicates greater potential returns compared to the smart grid investment. The smart grid option, while innovative, presents a lower return at this time.</p>
 
-  <div style="margin-bottom:36px;">
-    <h3 style="color:#0b3d91; border-bottom:2px solid #ccc;">4. Strategic Considerations</h3>
-    <p>Mention key factors like infrastructure, political climate, funding options, or capacity.</p>
-  </div>
+  <h3 style="color:#1e3a8a;border-bottom:2px solid #e0e0e0;padding-bottom:6px;">3. Recommendation</h3>
+  <p><strong>${decision}</strong> This recommendation aligns with both short-term returns and long-term infrastructure priorities.</p>
+
+  <h3 style="color:#1e3a8a;border-bottom:2px solid #e0e0e0;padding-bottom:6px;">4. Strategic Considerations</h3>
+  <p>Infrastructure readiness, funding access, market volatility, and political support all impact the feasibility of both options. Continued monitoring of regulatory trends is essential for smart grid viability in the future.</p>
 </div>
 `
-    };
+};
+
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
