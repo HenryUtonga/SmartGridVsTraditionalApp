@@ -74,7 +74,7 @@ Here is the required structure:
    <p>Interpret the ROI and NPV values in your own words, highlighting financial feasibility, strengths, and weaknesses of both options. Use at least 4–6 sentences.</p>
 
   <h3 style="color:#1e3a8a;border-bottom:2px solid #e0e0e0;padding-bottom:6px;">3. Recommendation</h3>
-  <p>Write here your recommendation paragraph clealy advising whrther upgrading the grid is more cost effecing than building a new power plant using at least 4–5 sentences and justify it with the metrics above.</p>
+  <p>Write here your recommendation paragraph clealy advising whether upgrading the grid is more cost effecing than building a new power plant or viceversa. Use at least 4–5 sentences and justify it with the metrics above.</p>
 
   <h3 style="color:#1e3a8a;border-bottom:2px solid #e0e0e0;padding-bottom:6px;">4. Strategic Considerations</h3>
   <p>Discuss other important factors like infrastructure, energy policy, funding access, and long-term resilience in 3–4 sentences.</p> 
