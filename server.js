@@ -31,7 +31,7 @@ app.post("/api/report", async (req, res) => {
    const userMessage = {
   role: "user",
   content: `
-You are an expert energy investment analyst. Generate a clean HTML report **without using markdown**. Style the report **visually using inline CSS** (no external CSS needed). Format metrics in a **two-column HTML table** under Section 2.1.
+You are an expert energy investment analyst. Generate a clean HTML report without using markdown. Style the report **visually using inline CSS** (no external CSS needed). Format metrics in a **two-column HTML table** under Section 2.1.
 
 Use these values:
 - New Plant CapEx: $${m.Cplant.toLocaleString()}
@@ -48,7 +48,7 @@ Use these values:
 
 Here is the required structure:
 
-<div style="max-width:800px;margin:auto;font-family:Segoe UI,Helvetica,sans-serif;background:#fff;padding:30px;border-radius:8px;box-shadow:0 0 12px rgba(0,0,0,0.05)">
+<div style="max-width:800px;margin:auto;font-family:Segoe UI,Helvetica,sans-serif;background:#fff;padding:20px;border-radius:8px;box-shadow:0 0 12px rgba(0,0,0,0.05)">
   <div style="background:#d0f0c0;text-align:center;padding:16px;border-radius:6px;font-size:24px;font-weight:bold;">
     INVESTIMENT REPORT: SMART GRID vs NEW POWER PLANT ANALYSIS REPORT
   </div>
