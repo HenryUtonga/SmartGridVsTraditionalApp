@@ -72,14 +72,14 @@ Here is the required structure:
   </table>
 
   <h4 style="margin-top:20px;color:#2c3e50;">2.2 Interpretation</h4>
-  <p>Interpret the ROI and NPV values in your own words, highlighting financial feasibility, strengths, and weaknesses of both options. Use at least 4–6 sentences.</p>
+  <p style="font-weight:normal; line-height:1.6; margin: 8px 0;">[Interpret the ROI and NPV values in your own words, highlighting financial feasibility, strengths, and weaknesses of both options. Use at least 4–6 sentences.]</p>
 
   <h3 style="color:#1e3a8a;border-bottom:2px solid #e0e0e0;padding-bottom:6px;">3. Recommendation</h3>
-  <p>Based on the financial analysis, generate a clear and persuasive recommendation paragraph. Compare both options using ROI and NPV values. Decide which investment is preferable and justify your choice in 4–6 well-written sentences using the data provided.</p>
+  <p style="font-weight:normal; line-height:1.6; margin: 8px 0;">[Based on the financial analysis, generate a clear and persuasive recommendation paragraph. Compare both options using ROI and NPV values. Decide which investment is preferable and justify your choice in 4–6 well-written sentences using the data provided.]</p>
 
 
   <h3 style="color:#1e3a8a;border-bottom:2px solid #e0e0e0;padding-bottom:6px;">4. Strategic Considerations</h3>
-  <p>Discuss other important factors like infrastructure, energy policy, funding access, and long-term resilience in 3–4 sentences.</p> 
+  <p style="font-weight:normal; line-height:1.6; margin: 8px 0;">[Discuss other important factors like infrastructure, energy policy, funding access, and long-term resilience in 3–4 sentences.]</p> 
 
 </div>
 `
