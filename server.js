@@ -55,7 +55,7 @@ Here is the required structure:
 
   <h3 style="color:#1e3a8a;border-bottom:2px solid #e0e0e0;padding-bottom:6px;">1. Executive Summary</h3>
 <p style="font-weight:normal; line-height:1.6; margin: 8px 0;">
-Based on your interpretation above, provide a clear and well-reasoned Executive Summary with 4–5 full sentences.</p>
+[Based on your interpretation above, provide a clear and well-reasoned Executive Summary with 4–5 full sentences.]</p>
 
   <h3 style="color:#1e3a8a;border-bottom:2px solid #e0e0e0;padding-bottom:6px;">2. Financial Analysis</h3>
 
