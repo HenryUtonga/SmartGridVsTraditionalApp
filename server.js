@@ -59,7 +59,7 @@ Here is the required structure:
 
   <h3 style="color:#1e3a8a;border-bottom:2px solid #e0e0e0;padding-bottom:6px;">2. Financial Analysis</h3>
 
-  <h4 style="margin-top:8px;color:#2c3e50;">2.1 Investment Metrics</h4>
+  <h4 style="margin: 4px 0;color:#2c3e50;">2.1 Investment Metrics</h4>
   <table style="width:100%;border-collapse:collapse;margin-top:10px;font-weight:normal;">
     <tr><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">New Plant CapEx</td><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">$${m.Cplant.toLocaleString()}</td></tr>
     <tr><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">Smart Grid CapEx</td><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">$${m.Csmart.toLocaleString()}</td></tr>
