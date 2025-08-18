@@ -1,7 +1,7 @@
 body {
   font-family: "Segoe UI", "Helvetica Neue", sans-serif;
   background-color: #f9f9f9;
-  padding: 20px;
+  padding: 10px;
   color: #333;
 }
 
@@ -9,7 +9,7 @@ body {
   background-color: #ffffff;
   max-width: 800px;
   margin: auto;
-  padding: 30px;
+  padding: 10px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
@@ -19,7 +19,7 @@ body {
   font-size: 24px;
   font-weight: bold;
   text-align: center;
-  padding: 16px;
+  padding: 10px;
   margin-bottom: 4px;
   border-radius: 6px;
 }
