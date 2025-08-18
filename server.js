@@ -61,14 +61,14 @@ Here is the required structure:
 
   <h4 style="margin-top:20px;color:#2c3e50;">2.1 Investment Metrics</h4>
   <table style="width:100%;border-collapse:collapse;margin-top:10px;font-weight:normal;">
-    <tr><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">New Plant CapEx</td><td style="padding:8px;border:1px solid #ccc;">$${m.Cplant.toLocaleString()}</td></tr>
-    <tr><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">Smart Grid CapEx</td><td style="padding:8px;border:1px solid #ccc;">$${m.Csmart.toLocaleString()}</td></tr>
-    <tr><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">Annual Revenue (Plant)</td><td style="padding:8px;border:1px solid #ccc;">$${m.Rplant.toLocaleString()}</td></tr>
-    <tr><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">Annual Revenue (Smart Grid)</td><td style="padding:8px;border:1px solid #ccc;">$${m.revenuesmart.toLocaleString()}</td></tr>
-    <tr><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">ROI (Plant)</td><td style="padding:8px;border:1px solid #ccc;">${m.ROIplant.toFixed(2)}%</td></tr>
-    <tr><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">ROI (Smart Grid)</td><td style="padding:8px;border:1px solid #ccc;">${m.ROIsmart.toFixed(2)}%</td></tr>
-    <tr><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">NPV (Plant)</td><td style="padding:8px;border:1px solid #ccc;">$${m.NPVplant.toFixed(2)}</td></tr>
-    <tr><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">NPV (Smart Grid)</td><td style="padding:8px;border:1px solid #ccc;">$${m.NPVsmart.toFixed(2)}</td></tr>
+    <tr><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">New Plant CapEx</td><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">$${m.Cplant.toLocaleString()}</td></tr>
+    <tr><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">Smart Grid CapEx</td><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">$${m.Csmart.toLocaleString()}</td></tr>
+    <tr><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">Annual Revenue (Plant)</td><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">$${m.Rplant.toLocaleString()}</td></tr>
+    <tr><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">Annual Revenue (Smart Grid)</td><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">$${m.revenuesmart.toLocaleString()}</td></tr>
+    <tr><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">ROI (Plant)</td><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">${m.ROIplant.toFixed(2)}%</td></tr>
+    <tr><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">ROI (Smart Grid)</td><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">${m.ROIsmart.toFixed(2)}%</td></tr>
+    <tr><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">NPV (Plant)</td><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">$${m.NPVplant.toFixed(2)}</td></tr>
+    <tr><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">NPV (Smart Grid)</td><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">$${m.NPVsmart.toFixed(2)}</td></tr>
   </table>
 
   <h4 style="margin-top:20px;color:#2c3e50;">2.2 Interpretation</h4>
