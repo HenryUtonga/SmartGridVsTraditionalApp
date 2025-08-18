@@ -31,7 +31,7 @@ app.post("/api/report", async (req, res) => {
    const userMessage = {
   role: "user",
   content: `
-You are an expert energy investment analyst. Generate a clean HTML report without using markdown. Style the report **visually using inline CSS** (no external CSS needed). Format metrics in a **two-column HTML table** under Section 2.1.
+You are an expert energy investment analyst. Generate a clean HTML report without using markdown. Style the report visually using inline CSS (no external CSS needed). Format metrics in a two-column HTML table under Section 2.1.
 
 Use these values:
 - New Plant CapEx: $${m.Cplant.toLocaleString()}
