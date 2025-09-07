@@ -90,7 +90,7 @@ function calculate() {
     Ctype  = parseFloat(document.getElementById("plantType").value) || 0;
     Region = parseFloat(document.getElementById("region").value)    || 0;
   }
-
+  const UsersPerMeter = parseFloat(document.getElementById("UsersPerMeter").value) || 1;
   const Cinfra   = parseFloat(document.getElementById("Costinfra").value)   || 0;
   const Nmeters  = parseFloat(document.getElementById("Numberofcust").value)|| 0;
   const Cmeters  = parseFloat(document.getElementById("Costmeters").value)  || 0;
@@ -102,7 +102,7 @@ function calculate() {
 
   /* ---------- 2. CORE FORMULAS ---------- */
   const Cplant        = Pnew * Ctype * Region;
-  const Csmart        = Cinfra + ((Nmeters * Cmeters) / 5);
+  const Csmart        = Cinfra + ((Nmeters * Cmeters) / UsersPerMeter);
   const Rplant        = Pnew * H * Ttariff * 365 * 1000;
   const Ssmart        = Rplant * (Ssavings / 100);
   const revenuesmart  = Rplant + Ssmart;
