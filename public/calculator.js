@@ -104,7 +104,7 @@ function calculate() {
   const Cplant        = Pnew * Ctype * Region;
   const Csmart        = Cinfra + ((Nmeters * Cmeters) / UsersPerMeter);
   const Rplant        = Pnew * H * Ttariff * 365 * 1000;
-  const Ssmart        = Rplant * (Ssavings / 100);
+  const Ssmart        = Pnew * H * Ttariff * 365 * (Ssavings / 100);
   const revenuesmart  = Rplant + Ssmart;
   const ROIplant      = (Rplant / (Cplant || 1)) * 100;
   const ROIsmart      = (revenuesmart / (Csmart || 1)) * 100;
