@@ -177,7 +177,7 @@ function calculate() {
 
   /* ---------- 3. WRITE RESULTS (non-AI) ---------- */
   document.getElementById("NewPlantResult").textContent = Cplant ? `$${Cplant.toLocaleString(undefined, formattingOptions)}` : "--";
-  document.getElementById("UgradePlantResult").textContent = Csmart ? `$${Csmart.toLocaleString(undefined, formattingOptions)}` : "--";
+  document.getElementById("UpgradePlantResult").textContent = Csmart ? `$${Csmart.toLocaleString(undefined, formattingOptions)}` : "--";
   document.getElementById("NewPlantRevenueResult").textContent = totalPlantRevenue ? `$${totalPlantRevenue.toLocaleString(undefined, formattingOptions)}` : "--";
   document.getElementById("AnnualSavingsResult").textContent = totalSmartRevenue ? `$${totalSmartRevenue.toLocaleString(undefined, formattingOptions)}` : "--";
   document.getElementById("Smartrevenue").textContent = totalSmartRevenue ? `$${totalSmartRevenue.toLocaleString(undefined, formattingOptions)}` : "--";
