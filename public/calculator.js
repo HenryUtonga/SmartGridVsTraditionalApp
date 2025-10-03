@@ -79,7 +79,7 @@ async function downloadDecisionPdf() {
 // ─── 3. Core calculate() – compute metrics then invoke AI report ─
 function calculate() {
   /* ---------- 1. READ INPUTS ---------- */
-  const Pnew       = parseFloat(document.getElementById("Additionalcapacity").value) || 0;
+  const cprod       = parseFloat(document.getElementById("currentprod").value) || 0;
   const useCustom  = document.getElementById("useCustomCost").checked;
 
   let Ctype, Region;
@@ -104,7 +104,7 @@ function calculate() {
   const Cplant        = Pnew * Ctype * Region;
   const Csmart        = Cinfra + ((Nmeters * Cmeters) / UsersPerMeter);
   const Rplant        = Pnew * H * Ttariff * 365 * 1000;
-  const Ssmart        = Pnew * H * Ttariff * 365 * (Ssavings / 100);
+  const Ssmart        = cprod * H * Ttariff * 365 * (Ssavings / 100);
   const revenuesmart  = Rplant + Ssmart;
   const ROIplant      = (Rplant / (Cplant || 1)) * 100;
   const ROIsmart      = (revenuesmart / (Csmart || 1)) * 100;
