@@ -81,6 +81,7 @@ function calculate() {
   /* ---------- 1. READ INPUTS ---------- */
   const cprod       = parseFloat(document.getElementById("currentprod").value) || 0;
   const useCustom  = document.getElementById("useCustomCost").checked;
+  const Pnew = parseFloat(document.getElementById("Additionalcapacity").value) || 0;
 
   let Ctype, Region;
   if (useCustom) {
