@@ -117,6 +117,45 @@ function calculate() {
     NPVsmart += revenuesmart / Math.pow(1 + r, t);
   }
 
+   // ─── 2b. Projected ROI and NPV at 5, 10, 20 yearsoooooooooooooooooooooooooooooo ───
+function calculateNPVandROI(lifespan) {
+  let npvPlant = -Cplant;
+  let npvSmart = -Csmart;
+  for (let t = 1; t <= lifespan; t++) {
+    npvPlant += Rplant / Math.pow(1 + r, t);
+    npvSmart += revenuesmart / Math.pow(1 + r, t);
+  }
+  const roiPlant = (Rplant * lifespan / (Cplant || 1)) * 100;
+  const roiSmart = (revenuesmart * lifespan / (Csmart || 1)) * 100;
+  return { roiPlant, roiSmart, npvPlant, npvSmart };
+}
+
+const projectionYears = [5, 10, 20];
+let projectionsHtml = `<table style="width:100%;border-collapse:collapse;text-align:center;">
+  <tr style="background:#eee;font-weight:bold;">
+    <td>Years</td>
+    <td>ROI (Plant)</td>
+    <td>ROI (Smart Grid)</td>
+    <td>NPV (Plant)</td>
+    <td>NPV (Smart Grid)</td>
+  </tr>`;
+
+projectionYears.forEach((years) => {
+  const { roiPlant, roiSmart, npvPlant, npvSmart } = calculateNPVandROI(years);
+  projectionsHtml += `
+    <tr>
+      <td>${years}</td>
+      <td>${roiPlant.toFixed(2)}%</td>
+      <td>${roiSmart.toFixed(2)}%</td>
+      <td>$${npvPlant.toFixed(2)}</td>
+      <td>$${npvSmart.toFixed(2)}</td>
+    </tr>`;
+});
+
+projectionsHtml += "</table>";
+document.getElementById("projectionOutput").innerHTML = projectionsHtml;
+
+
   /* ---------- 3. WRITE RESULTS (non-AI) ---------- */
   document.getElementById("NewPlantResult").textContent        =
     Cplant ? `$${Cplant.toLocaleString(undefined,{maximumFractionDigits:2})}` : "--";
