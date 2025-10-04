@@ -59,17 +59,35 @@ Here is the required structure:
 
   <h3 style="color:#1e3a8a;border-bottom:2px solid #e0e0e0;padding-bottom:6px;">2. Financial Analysis</h3>
 
-  <h4 style="margin: 4px 0;color:#2c3e50;">2.1 Investment Metrics</h4>
-  <table style="width:100%;border-collapse:collapse;margin-top:1px;font-weight:normal;">
-    <tr><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">New Plant CapEx</td><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">$${m.Cplant.toLocaleString()}</td></tr>
-    <tr><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">Smart Grid CapEx</td><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">$${m.Csmart.toLocaleString()}</td></tr>
-    <tr><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">Annual Revenue (Plant)</td><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">$${m.Rplant.toLocaleString()}</td></tr>
-    <tr><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">Annual Revenue (Smart Grid)</td><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">$${m.revenuesmart.toLocaleString()}</td></tr>
-    <tr><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">ROI (Plant)</td><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">${m.ROIplant.toFixed(2)}%</td></tr>
-    <tr><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">ROI (Smart Grid)</td><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">${m.ROIsmart.toFixed(2)}%</td></tr>
-    <tr><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">NPV (Plant)</td><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">$${m.NPVplant.toFixed(2)}</td></tr>
-    <tr><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">NPV (Smart Grid)</td><td style="padding:8px;border:1px solid #ccc;font-weight:normal;">$${m.NPVsmart.toFixed(2)}</td></tr>
-  </table>
+<h4 style="margin: 4px 0;color:#2c3e50;">2.1 Investment Metrics</h4>
+<table style="width:100%;border-collapse:collapse;margin-top:8px;font-weight:normal;">
+  <tr style="background:#eee;">
+    <th style="padding:8px;border:1px solid #ccc;text-align:left;">Metric</th>
+    <th style="padding:8px;border:1px solid #ccc;text-align:left;">New Power Plant</th>
+    <th style="padding:8px;border:1px solid #ccc;text-align:left;">Smart Grid</th>
+  </tr>
+  <tr>
+    <td style="padding:8px;border:1px solid #ccc;">Capital Expenditure (CapEx)</td>
+    <td style="padding:8px;border:1px solid #ccc;">$${m.Cplant.toLocaleString()}</td>
+    <td style="padding:8px;border:1px solid #ccc;">$${m.Csmart.toLocaleString()}</td>
+  </tr>
+  <tr>
+    <td style="padding:8px;border:1px solid #ccc;">Annual Revenue</td>
+    <td style="padding:8px;border:1px solid #ccc;">$${m.Rplant.toLocaleString()}</td>
+    <td style="padding:8px;border:1px solid #ccc;">$${m.revenuesmart.toLocaleString()}</td>
+  </tr>
+  <tr>
+    <td style="padding:8px;border:1px solid #ccc;">Return on Investment (ROI)</td>
+    <td style="padding:8px;border:1px solid #ccc;">${m.ROIplant.toFixed(2)}%</td>
+    <td style="padding:8px;border:1px solid #ccc;">${m.ROIsmart.toFixed(2)}%</td>
+  </tr>
+  <tr>
+    <td style="padding:8px;border:1px solid #ccc;">Net Present Value (NPV)</td>
+    <td style="padding:8px;border:1px solid #ccc;">$${m.NPVplant.toFixed(2)}</td>
+    <td style="padding:8px;border:1px solid #ccc;">$${m.NPVsmart.toFixed(2)}</td>
+  </tr>
+</table>
+
 
   <h4 style="margin-top:8px;color:#2c3e50;">2.2 Interpretation</h4>
   <p style="font-weight:normal; line-height:1.6; margin: 8px 0;">[Interpret the ROI and NPV values in your own words, highlighting financial feasibility, strengths, and weaknesses of both options. Use at least 4–6 sentences.]</p>
