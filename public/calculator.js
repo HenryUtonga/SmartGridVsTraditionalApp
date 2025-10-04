@@ -157,7 +157,19 @@ function calculate() {
       <td>NPV (Plant)</td>
       <td>NPV (Smart Grid)</td>
     </tr>`;
+  if (L > 0 && !projectionYears.includes(L)) {
+    const { roiPlant, roiSmart, npvPlant, npvSmart } = calculateNPVandROI(L);
+    projectionsHtml += `
+      <tr style="font-weight:bold; border-top: 2px solid #ccc;">
+        <td>${L} (Full Term)</td>
+        <td>${roiPlant.toLocaleString(undefined, formattingOptions)}%</td>
+        <td>${roiSmart.toLocaleString(undefined, formattingOptions)}%</td>
+        <td>$${npvPlant.toLocaleString(undefined, formattingOptions)}</td>
+        <td>$${npvSmart.toLocaleString(undefined, formattingOptions)}</td>
+      </tr>`;
+  }
 
+   
   projectionYears.forEach((years) => {
     if (years <= L) {
       const { roiPlant, roiSmart, npvPlant, npvSmart } = calculateNPVandROI(years);
