@@ -275,7 +275,7 @@ window.roiChart = new Chart(ctx2, {
         borderDash: [5, 5],
         fill: false,
         tension: 0.1,
-        yAxisID: "y1", // right-side axis
+        yAxisID: "y", // ✅ use the same axis
       },
       {
         label: "ROI – Power Plant",
@@ -284,7 +284,7 @@ window.roiChart = new Chart(ctx2, {
         borderDash: [5, 5],
         fill: false,
         tension: 0.1,
-        yAxisID: "y", // left-side axis
+        yAxisID: "y", // ✅ same axis as above
       },
     ],
   },
@@ -301,30 +301,20 @@ window.roiChart = new Chart(ctx2, {
       y: {
         type: "linear",
         position: "left",
-        title: { display: true, text: "ROI – Power Plant (%)" },
+        title: { display: true, text: "ROI (%)" },
         min: -100,
-        max: 200,
+        max: 70000, // adjust this upper bound to fit both lines
         ticks: {
-          stepSize: 50,
           callback: (value) => value + "%",
         },
         grid: { drawOnChartArea: true },
       },
-      y1: {
-        type: "linear",
-        position: "right",
-        title: { display: true, text: "ROI – Smart Grid (%)" },
-        min: 0,
-        max: 70000, // adjust upper bound if your smart grid ROI exceeds this
-        ticks: {
-          callback: (value) => value + "%",
-        },
-        grid: { drawOnChartArea: false }, // keeps chart clean
+      x: {
+        title: { display: true, text: "Years" },
       },
     },
   },
 });
-
   
   /* ---------- WRITE RESULTS (non-AI) ---------- */
   document.getElementById("NewPlantResult").textContent = Cplant ? `$${Cplant.toLocaleString(undefined, formattingOptions)}` : "--";
