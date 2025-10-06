@@ -11,7 +11,7 @@ document.getElementById("useCustomCost").addEventListener("change", () => {
   document.getElementById("defaultCostContainer").style.display  = useCustom ? "none"  : "block";
   });
 
-// ─── 1. Generate AI decision report via ChatGPT ─────────────────
+// ─── Generate AI decision report via ChatGPT ─────────────────
 async function generateReport(metrics) {
   const responseEl = document.getElementById("decisionText");
   const pdfBtn     = document.getElementById("downloadDecisionPdf");
@@ -62,7 +62,7 @@ async function generateReport(metrics) {
   pdfBtn.onclick = () => downloadDecisionPdf();
 }
 
-// ─── 2. Download decision report as PDF ────────────────────────
+// ─── Download decision report as PDF ────────────────────────
 async function downloadDecisionPdf() {
   const el = document.getElementById("decisionText");
   const canvas = await html2canvas(el, { scale: 2 });
@@ -102,7 +102,7 @@ function calculate() {
   const r = (parseFloat(document.getElementById("Discount").value) || 0) / 100;
   const L = parseFloat(document.getElementById("Lifespan").value) || 0;
 
-  /* ---------- 2. CORE FORMULAS ---------- */
+  /* ---------- CORE FORMULAS ---------- */
   const Cplant = Pnew * Ctype * Region;
   const Csmart = Cinfra + ((Nmeters * Cmeters) / UsersPerMeter);
   
@@ -198,7 +198,7 @@ for (let t = 1; t <= L; t++) {
   roiSmartOverTime.push((npvS / (Csmart || 1)) * 100);
 }
 
-// ===================== STEP 2: Create chart (insert AFTER calculation logic) =====================
+// ===================== Create chart (insert AFTER calculation logic) =====================
 const ctx = document.getElementById("investmentChart").getContext("2d");
 
 if (myChart) myChart.destroy();
@@ -272,7 +272,7 @@ myChart = new Chart(ctx, {
   }
 });
   
-  /* ---------- 3. WRITE RESULTS (non-AI) ---------- */
+  /* ---------- WRITE RESULTS (non-AI) ---------- */
   document.getElementById("NewPlantResult").textContent = Cplant ? `$${Cplant.toLocaleString(undefined, formattingOptions)}` : "--";
   document.getElementById("UpgradePlantResult").textContent = Csmart ? `$${Csmart.toLocaleString(undefined, formattingOptions)}` : "--";
   document.getElementById("NewPlantRevenueResult").textContent = totalPlantRevenue ? `$${totalPlantRevenue.toLocaleString(undefined, formattingOptions)}` : "--";
@@ -284,11 +284,11 @@ myChart = new Chart(ctx, {
   document.getElementById("npvOutput").textContent = 
     `Plant: $${NPVplant.toLocaleString(undefined, formattingOptions)} | Smart Grid: $${NPVsmart.toLocaleString(undefined, formattingOptions)}`;
 
-  /* ---------- 4. Invoke AI report generation ---------- */
+  /* ---------- Invoke AI report generation ---------- */
   generateReport({ Cplant, Csmart, Rplant: totalPlantRevenue, revenuesmart: totalSmartRevenue, ROIplant, ROIsmart, NPVplant, NPVsmart });
 }
 
-/* ---------- 5. CLEAR FORM (optional) ---------- */
+/* ---------- CLEAR FORM  ---------- */
 function clearForm() {
   document.querySelectorAll("input[type='number']").forEach(el => el.value = "");
   document.getElementById("useCustomCost").checked            = false;
