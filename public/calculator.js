@@ -109,7 +109,7 @@ function calculate() {
   const Pnew_kW = Pnew * 1000;
   const cprod_kW = cprod * 1000;
   const RplantAnnual = Pnew_kW * H * Ttariff * 365;
-  const SsmartAnnual = cprod_kW * H * Ttariff * 365 * (Ssavings / 100);
+  const SsmartAnnual = cprod_kW * H * Ttariff * 365 * (1 + Ssavings / 100);
 
   let NPVplant = -Cplant;
   let NPVsmart = -Csmart;
