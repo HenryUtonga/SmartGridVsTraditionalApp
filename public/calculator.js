@@ -263,6 +263,7 @@ window.npvChart = new Chart(ctx1, {
 });
 
 // === Chart 2: ROI ===
+// === Chart 2: ROI ===
 window.roiChart = new Chart(ctx2, {
   type: "line",
   data: {
@@ -294,7 +295,15 @@ window.roiChart = new Chart(ctx2, {
     scales: {
       y: {
         title: { display: true, text: "ROI (%)" },
-        beginAtZero: true,
+        min: -100,
+        max: 200,
+        ticks: {
+          stepSize: 50,
+          callback: (value) => value + "%",
+        },
+        grid: {
+          color: "rgba(0,0,0,0.1)",
+        },
       },
     },
   },
