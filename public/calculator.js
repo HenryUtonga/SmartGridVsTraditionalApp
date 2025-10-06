@@ -205,7 +205,6 @@ for (let t = 1; t <= L; t++) {
 
 
 // ===================== Create chart (insert AFTER calculation logic) =====================
-const ctx = document.getElementById("investmentChart").getContext("2d");
 // Destroy previous charts if they exist
 if (window.npvChart) window.npvChart.destroy();
 if (window.roiChart) window.roiChart.destroy();
