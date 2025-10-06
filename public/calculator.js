@@ -216,14 +216,14 @@ myChart = new Chart(ctx, {
     datasets: [
       {
         label: 'NPV - Smart Grid',
-        data: npvSmart,
+        data: npvSmartOverTime,
         borderColor: 'green',
         fill: false,
         yAxisID: 'y'
       },
       {
         label: 'NPV - Power Plant',
-        data: npvPlant,
+        data: npvPlantOverTime,
         borderColor: 'orange',
         fill: false,
         yAxisID: 'y'
