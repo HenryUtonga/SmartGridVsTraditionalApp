@@ -177,7 +177,7 @@ function calculate() {
   projectionsHtml += "</table>";
   document.getElementById("projectionOutput").innerHTML = projectionsHtml;
 
- // ===================== STEP 1: Add these new arrays in calculate() =====================
+ // ===================== Add these new arrays in calculate() =====================
 let npvPlantOverTime = [];
 let npvSmartOverTime = [];
 let roiPlantOverTime = [];
@@ -205,12 +205,28 @@ for (let t = 1; t <= L; t++) {
 
 
 // ===================== Create chart (insert AFTER calculation logic) =====================
-// Destroy previous charts if they exist
-if (window.npvChart) window.npvChart.destroy();
-if (window.roiChart) window.roiChart.destroy();
+
+// Destroy old charts safely
+if (window.npvChart instanceof Chart) {
+  window.npvChart.destroy();
+}
+if (window.roiChart instanceof Chart) {
+  window.roiChart.destroy();
+}
+
+// Safely get canvases
+const npvCanvas = document.getElementById("npvChart");
+const roiCanvas = document.getElementById("roiChart");
+
+if (!npvCanvas || !roiCanvas) {
+  console.error("Canvas elements not found. Check your HTML IDs (npvChart, roiChart).");
+  return;
+}
+
+const ctx1 = npvCanvas.getContext("2d");
+const ctx2 = roiCanvas.getContext("2d");
 
 // === Chart 1: NPV ===
-const ctx1 = document.getElementById("npvChart").getContext("2d");
 window.npvChart = new Chart(ctx1, {
   type: "line",
   data: {
@@ -247,7 +263,6 @@ window.npvChart = new Chart(ctx1, {
 });
 
 // === Chart 2: ROI ===
-const ctx2 = document.getElementById("roiChart").getContext("2d");
 window.roiChart = new Chart(ctx2, {
   type: "line",
   data: {
@@ -284,7 +299,6 @@ window.roiChart = new Chart(ctx2, {
     },
   },
 });
-
 
   
   /* ---------- WRITE RESULTS (non-AI) ---------- */
