@@ -188,8 +188,8 @@ let npvS = -Csmart;
 
 for (let t = 1; t <= L; t++) {
   const disc = Math.pow(1 + r, t);
-  npvP += Rplant / disc;
-  npvS += revenuesmart / disc;
+     npvP += RplantAnnual / disc;       
+     npvS += SsmartAnnual / disc;      
 
   npvPlant.push(npvP);
   npvSmart.push(npvS);
