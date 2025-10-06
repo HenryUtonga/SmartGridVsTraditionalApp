@@ -177,28 +177,6 @@ function calculate() {
   projectionsHtml += "</table>";
   document.getElementById("projectionOutput").innerHTML = projectionsHtml;
 
-   // ===================== STEP 1: Add these new arrays in calculate() =====================
-let npvPlant = [];
-let npvSmart = [];
-let roiPlantOverTime = [];
-let roiSmartOverTime = [];
-
-let npvP = -Cplant;
-let npvS = -Csmart;
-
-for (let t = 1; t <= L; t++) {
-  const disc = Math.pow(1 + r, t);
-
-    npvP += RplantAnnual / disc;
-    npvS += SsmartAnnual / disc;
-
-  npvPlant.push(npvP);
-  npvSmart.push(npvS);
-
-  roiPlantOverTime.push((npvP / (Cplant || 1)) * 100);
-  roiSmartOverTime.push((npvS / (Csmart || 1)) * 100);
-}
-
  // ===================== STEP 1: Add these new arrays in calculate() =====================
 let npvPlant = [];
 let npvSmart = [];
