@@ -262,8 +262,7 @@ window.npvChart = new Chart(ctx1, {
   },
 });
 
-// === Chart 2: ROI ===
-// === Chart 2: ROI ===
+// === Chart 2: ROI (Dual Y-Axes for Smart Grid and Power Plant) ===
 window.roiChart = new Chart(ctx2, {
   type: "line",
   data: {
@@ -276,6 +275,7 @@ window.roiChart = new Chart(ctx2, {
         borderDash: [5, 5],
         fill: false,
         tension: 0.1,
+        yAxisID: "y1", // right-side axis
       },
       {
         label: "ROI – Power Plant",
@@ -284,6 +284,7 @@ window.roiChart = new Chart(ctx2, {
         borderDash: [5, 5],
         fill: false,
         tension: 0.1,
+        yAxisID: "y", // left-side axis
       },
     ],
   },
@@ -291,19 +292,34 @@ window.roiChart = new Chart(ctx2, {
     responsive: true,
     plugins: {
       title: { display: true, text: "Return on Investment (ROI) Over Time" },
+      legend: {
+        position: "top",
+        labels: { boxWidth: 20, usePointStyle: true },
+      },
     },
     scales: {
       y: {
-        title: { display: true, text: "ROI (%)" },
+        type: "linear",
+        position: "left",
+        title: { display: true, text: "ROI – Power Plant (%)" },
         min: -100,
         max: 200,
         ticks: {
           stepSize: 50,
           callback: (value) => value + "%",
         },
-        grid: {
-          color: "rgba(0,0,0,0.1)",
+        grid: { drawOnChartArea: true },
+      },
+      y1: {
+        type: "linear",
+        position: "right",
+        title: { display: true, text: "ROI – Smart Grid (%)" },
+        min: 0,
+        max: 70000, // adjust upper bound if your smart grid ROI exceeds this
+        ticks: {
+          callback: (value) => value + "%",
         },
+        grid: { drawOnChartArea: false }, // keeps chart clean
       },
     },
   },
