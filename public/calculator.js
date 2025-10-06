@@ -331,7 +331,7 @@ window.roiChart = new Chart(ctx2, {
   document.getElementById("UpgradePlantResult").textContent = Csmart ? `$${Csmart.toLocaleString(undefined, formattingOptions)}` : "--";
   document.getElementById("NewPlantRevenueResult").textContent = totalPlantRevenue ? `$${totalPlantRevenue.toLocaleString(undefined, formattingOptions)}` : "--";
   document.getElementById("AnnualSavingsResult").textContent = totalSmartRevenue ? `$${totalSmartRevenue.toLocaleString(undefined, formattingOptions)}` : "--";
-  document.getElementById("Smartrevenue").textContent = totalSmartRevenue ? `$${totalSmartRevenue.toLocaleString(undefined, formattingOptions)}` : "--";
+ /* document.getElementById("Smartrevenue").textContent = totalSmartRevenue ? `$${totalSmartRevenue.toLocaleString(undefined, formattingOptions)}` : "--"; */
   
   document.getElementById("roiOutput").textContent = 
     `Plant: ${ROIplant.toLocaleString(undefined, formattingOptions)} % | Smart Grid: ${ROIsmart.toLocaleString(undefined, formattingOptions)} %`;
