@@ -206,77 +206,87 @@ for (let t = 1; t <= L; t++) {
 
 // ===================== Create chart (insert AFTER calculation logic) =====================
 const ctx = document.getElementById("investmentChart").getContext("2d");
+// Destroy previous charts if they exist
+if (window.npvChart) window.npvChart.destroy();
+if (window.roiChart) window.roiChart.destroy();
 
-if (myChart) myChart.destroy();
-
-myChart = new Chart(ctx, {
-  type: 'line',
+// === Chart 1: NPV ===
+const ctx1 = document.getElementById("npvChart").getContext("2d");
+window.npvChart = new Chart(ctx1, {
+  type: "line",
   data: {
     labels: Array.from({ length: L }, (_, i) => `Year ${i + 1}`),
     datasets: [
       {
-        label: 'NPV - Smart Grid',
+        label: "NPV – Smart Grid",
         data: npvSmartOverTime,
-        borderColor: 'green',
+        borderColor: "green",
         fill: false,
-        yAxisID: 'y'
+        tension: 0.1,
       },
       {
-        label: 'NPV - Power Plant',
+        label: "NPV – Power Plant",
         data: npvPlantOverTime,
-        borderColor: 'orange',
+        borderColor: "orange",
         fill: false,
-        yAxisID: 'y'
+        tension: 0.1,
       },
-      {
-        label: 'ROI - Smart Grid',
-        data: roiSmartOverTime,
-        borderColor: 'blue',
-        borderDash: [5, 5],
-        fill: false,
-        yAxisID: 'y1'
-      },
-      {
-        label: 'ROI - Power Plant',
-        data: roiPlantOverTime,
-        borderColor: 'red',
-        borderDash: [5, 5],
-        fill: false,
-        yAxisID: 'y1'
-      }
-    ]
+    ],
   },
   options: {
     responsive: true,
     plugins: {
-      title: {
-        display: true,
-        text: 'NPV and ROI Over Time'
-      }
+      title: { display: true, text: "Net Present Value (NPV) Over Time" },
     },
     scales: {
       y: {
-        type: 'linear',
-        position: 'left',
-        title: {
-          display: true,
-          text: 'NPV ($)'
-        }
+        title: { display: true, text: "NPV ($)" },
+        beginAtZero: true,
       },
-      y1: {
-        type: 'linear',
-        position: 'right',
-        title: {
-          display: true,
-          text: 'ROI (%)'
-        },
-        grid: {
-          drawOnChartArea: false
-        }
-      }
-    }
-  }
+    },
+  },
 });
+
+// === Chart 2: ROI ===
+const ctx2 = document.getElementById("roiChart").getContext("2d");
+window.roiChart = new Chart(ctx2, {
+  type: "line",
+  data: {
+    labels: Array.from({ length: L }, (_, i) => `Year ${i + 1}`),
+    datasets: [
+      {
+        label: "ROI – Smart Grid",
+        data: roiSmartOverTime,
+        borderColor: "blue",
+        borderDash: [5, 5],
+        fill: false,
+        tension: 0.1,
+      },
+      {
+        label: "ROI – Power Plant",
+        data: roiPlantOverTime,
+        borderColor: "red",
+        borderDash: [5, 5],
+        fill: false,
+        tension: 0.1,
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      title: { display: true, text: "Return on Investment (ROI) Over Time" },
+    },
+    scales: {
+      y: {
+        title: { display: true, text: "ROI (%)" },
+        beginAtZero: true,
+      },
+    },
+  },
+});
+
+
   
   /* ---------- WRITE RESULTS (non-AI) ---------- */
   document.getElementById("NewPlantResult").textContent = Cplant ? `$${Cplant.toLocaleString(undefined, formattingOptions)}` : "--";
