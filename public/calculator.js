@@ -199,7 +199,101 @@ for (let t = 1; t <= L; t++) {
   roiSmartOverTime.push((npvS / (Csmart || 1)) * 100);
 }
 
-   
+ // ===================== STEP 1: Add these new arrays in calculate() =====================
+let npvPlant = [];
+let npvSmart = [];
+let roiPlantOverTime = [];
+let roiSmartOverTime = [];
+
+let npvP = -Cplant;
+let npvS = -Csmart;
+
+for (let t = 1; t <= L; t++) {
+  const disc = Math.pow(1 + r, t);
+  npvP += Rplant / disc;
+  npvS += revenuesmart / disc;
+
+  npvPlant.push(npvP);
+  npvSmart.push(npvS);
+
+  roiPlantOverTime.push((npvP / (Cplant || 1)) * 100);
+  roiSmartOverTime.push((npvS / (Csmart || 1)) * 100);
+}
+
+// ===================== STEP 2: Create chart (insert AFTER calculation logic) =====================
+const ctx = document.getElementById("investmentChart").getContext("2d");
+
+if (myChart) myChart.destroy();
+
+myChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: Array.from({ length: L }, (_, i) => `Year ${i + 1}`),
+    datasets: [
+      {
+        label: 'NPV - Smart Grid',
+        data: npvSmart,
+        borderColor: 'green',
+        fill: false,
+        yAxisID: 'y'
+      },
+      {
+        label: 'NPV - Power Plant',
+        data: npvPlant,
+        borderColor: 'orange',
+        fill: false,
+        yAxisID: 'y'
+      },
+      {
+        label: 'ROI - Smart Grid',
+        data: roiSmartOverTime,
+        borderColor: 'blue',
+        borderDash: [5, 5],
+        fill: false,
+        yAxisID: 'y1'
+      },
+      {
+        label: 'ROI - Power Plant',
+        data: roiPlantOverTime,
+        borderColor: 'red',
+        borderDash: [5, 5],
+        fill: false,
+        yAxisID: 'y1'
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      title: {
+        display: true,
+        text: 'NPV and ROI Over Time'
+      }
+    },
+    scales: {
+      y: {
+        type: 'linear',
+        position: 'left',
+        title: {
+          display: true,
+          text: 'NPV ($)'
+        }
+      },
+      y1: {
+        type: 'linear',
+        position: 'right',
+        title: {
+          display: true,
+          text: 'ROI (%)'
+        },
+        grid: {
+          drawOnChartArea: false
+        }
+      }
+    }
+  }
+});
+  
   /* ---------- 3. WRITE RESULTS (non-AI) ---------- */
   document.getElementById("NewPlantResult").textContent = Cplant ? `$${Cplant.toLocaleString(undefined, formattingOptions)}` : "--";
   document.getElementById("UpgradePlantResult").textContent = Csmart ? `$${Csmart.toLocaleString(undefined, formattingOptions)}` : "--";
