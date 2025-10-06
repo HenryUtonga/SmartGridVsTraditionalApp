@@ -178,6 +178,13 @@ function calculate() {
   document.getElementById("projectionOutput").innerHTML = projectionsHtml;
 
  // ===================== STEP 1: Add these new arrays in calculate() =====================
+let npvPlantOverTime = [];
+let npvSmartOverTime = [];
+let roiPlantOverTime = [];
+let roiSmartOverTime = [];
+
+let npvP = -Cplant;
+let npvS = -Csmart; 
 let cumulativePlantRevenue = 0;
 let cumulativeSmartRevenue = 0;
 
