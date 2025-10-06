@@ -1,6 +1,8 @@
 /* ---------------------------------------------------------------
    calculator.js  (linked from the HTML with <script src="…">)
    ---------------------------------------------------------------*/
+let myChart = null; 
+
 
 // ─── 0. Toggle custom vs default cost UI ──────────────────────
 document.getElementById("useCustomCost").addEventListener("change", () => {
@@ -200,9 +202,9 @@ for (let t = 1; t <= L; t++) {
 // ===================== Create chart (insert AFTER calculation logic) =====================
 const ctx = document.getElementById("investmentChart").getContext("2d");
 
-if (window.investmentChart) window.investmentChart.destroy(); // destroy old chart if exists
+if (myChart) myChart.destroy();
 
-window.investmentChart = new Chart(ctx, {
+myChart = new Chart(ctx, {
   type: 'line',
   data: {
     labels: Array.from({ length: L }, (_, i) => `Year ${i + 1}`),
