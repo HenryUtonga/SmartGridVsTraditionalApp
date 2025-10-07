@@ -34,38 +34,46 @@ async function generateReport(metrics) {
   }
 }
 
-// ─── Download decision report as multi-page PDF ──────────────
+// ─── Download decision report as PDF (continuous, proper pagination) ────────────────────────
 async function downloadDecisionPdf() {
   const el = document.getElementById("decisionText");
   const { jsPDF } = window.jspdf;
+
+  // Capture the entire decision area as one large canvas
+  const canvas = await html2canvas(el, {
+    scale: 3,
+    useCORS: true,
+    backgroundColor: "#ffffff",
+    windowWidth: document.body.scrollWidth,
+  });
+
+  const imgData = canvas.toDataURL("image/png");
   const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
 
-  const sections = el.innerHTML.split(/<h3[^>]*>/).filter(Boolean);
+  const pageWidth = pdf.internal.pageSize.getWidth();
+  const pageHeight = pdf.internal.pageSize.getHeight();
+  const imgWidth = pageWidth - 20; // 10mm margin on each side
+  const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-  for (let i = 0; i < sections.length; i++) {
-    const htmlChunk = "<h3>" + sections[i];
-    const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = htmlChunk;
-    tempDiv.style.padding = "20px";
-    tempDiv.style.background = "white";
-    tempDiv.style.width = "800px";
-    tempDiv.style.margin = "auto";
-    document.body.appendChild(tempDiv);
+  let position = 10;
+  let heightLeft = imgHeight;
 
-    const canvas = await html2canvas(tempDiv, { scale: 2 });
-    const imgData = canvas.toDataURL("image/png");
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const imgProps = pdf.getImageProperties(imgData);
-    const pageHeight = (imgProps.height * pageWidth) / imgProps.width;
+  // First page
+  pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+  heightLeft -= pageHeight;
 
-    pdf.addImage(imgData, "PNG", 0, 0, pageWidth, pageHeight);
-    if (i < sections.length - 1) pdf.addPage();
-
-    tempDiv.remove();
+  // Add new pages if content overflows
+  while (heightLeft > 0) {
+    position = heightLeft - imgHeight + 10;
+    pdf.addPage();
+    pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
   }
 
+  // Save the final file
   pdf.save("Investment_Report.pdf");
 }
+
 
 function calculate() {
   /* ---------- 1. READ INPUTS ---------- */
