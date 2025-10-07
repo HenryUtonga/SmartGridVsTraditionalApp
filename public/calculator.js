@@ -302,8 +302,9 @@ window.roiChart = new Chart(ctx2, {
         type: "linear",
         position: "left",
         title: { display: true, text: "ROI (%)" },
-        min: -100,
-        max: 70000, // adjust this upper bound to fit both lines
+
+         min: Math.min(...roiPlantOverTime, ...roiSmartOverTime) * 0.9,
+         max: Math.max(...roiPlantOverTime, ...roiSmartOverTime) * 1.1,
         ticks: {
           callback: (value) => value + "%",
         },
