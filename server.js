@@ -101,11 +101,11 @@ box-shadow:0 0 6px rgba(0,0,0,0.05);font-size:13px;line-height:1.45;">
   </table>
 
   <h4 style="margin:4px 0;color:#2c3e50;">2.2 Interpretation</h4>
-  <p style="margin:2px 0 4px 0;">[Interpret ROI and NPV briefly (4–6 sentences) — discuss feasibility, efficiency, and comparative performance.]</p>
+  <p style="margin:2px 0 4px 0;">[Interpret ROI and NPV briefly (7–9 sentences) — discuss feasibility, efficiency, and comparative performance.also include a graph]</p>
 
   <h3 style="color:#1e3a8a;border-bottom:1px solid #ccc;
   padding-bottom:2px;margin:6px 0 4px 0;">3. Recommendation</h3>
-  <p style="margin:2px 0 4px 0;">[Write a clear recommendation paragraph comparing both options using the provided metrics. Choose one option and justify it in 4–6 sentences.]</p>
+  <p style="margin:2px 0 4px 0;">[Write a clear recommendation paragraph comparing both options using the provided metrics. Choose one option and justify it in 5–9 sentences.]</p>
 
   <h3 style="color:#1e3a8a;border-bottom:1px solid #ccc;
   padding-bottom:2px;margin:6px 0 4px 0;">4. Strategic Considerations</h3>
