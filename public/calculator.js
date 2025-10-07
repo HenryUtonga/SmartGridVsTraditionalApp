@@ -17,48 +17,21 @@ async function generateReport(metrics) {
   responseEl.textContent = "Generating AI report…";
   pdfBtn.style.display = "none";
 
-  let resp;
   try {
-    resp = await fetch("/api/report", {
+    const resp = await fetch("/api/report", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ metrics })
     });
+    if (!resp.ok) throw new Error(await resp.text());
+    const data = await resp.json();
+    if (data.error) throw new Error(data.error);
+    responseEl.innerHTML = data.report;
+    pdfBtn.style.display = "inline-block";
+    pdfBtn.onclick = () => downloadDecisionPdf();
   } catch (err) {
-    responseEl.textContent = "Network error: " + err.message;
-    return;
+    responseEl.textContent = "Error: " + err.message;
   }
-
-  if (!resp.ok) {
-    const text = await resp.text();
-    responseEl.textContent = `Error ${resp.status}: ${text}`;
-    return;
-  }
-
-  const contentType = resp.headers.get("content-type") || "";
-  let data;
-  if (contentType.includes("application/json")) {
-    try {
-      data = await resp.json();
-    } catch (err) {
-      const text = await resp.text();
-      responseEl.textContent = "Invalid JSON response: " + text;
-      return;
-    }
-  } else {
-    const text = await resp.text();
-    responseEl.textContent = "Non-JSON response: " + text;
-    return;
-  }
-
-  if (data.error) {
-    responseEl.textContent = data.error;
-    return;
-  }
-
-  responseEl.innerHTML = data.report;
-  pdfBtn.style.display = "inline-block";
-  pdfBtn.onclick = () => downloadDecisionPdf();
 }
 
 // ─── Download decision report as multi-page PDF ──────────────
@@ -67,7 +40,6 @@ async function downloadDecisionPdf() {
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
 
-  // Split on <h3> to make one page per major section
   const sections = el.innerHTML.split(/<h3[^>]*>/).filter(Boolean);
 
   for (let i = 0; i < sections.length; i++) {
@@ -109,6 +81,7 @@ function calculate() {
     Ctype = parseFloat(document.getElementById("plantType").value) || 0;
     Region = parseFloat(document.getElementById("region").value) || 0;
   }
+
   const UsersPerMeter = parseFloat(document.getElementById("UsersPerMeter").value) || 1;
   const Cinfra = parseFloat(document.getElementById("Costinfra").value) || 0;
   const Nmeters = parseFloat(document.getElementById("Numberofcust").value) || 0;
@@ -119,9 +92,8 @@ function calculate() {
   const r = (parseFloat(document.getElementById("Discount").value) || 0) / 100;
   const L = parseFloat(document.getElementById("Lifespan").value) || 0;
 
-  // Basic sanity: if no lifespan or tariff/hours, we can't compute
   if (L <= 0) {
-    alert("Please enter a project lifespan (years) greater than 0.");
+    alert("Please enter a valid project lifespan (years).");
     return;
   }
 
@@ -129,28 +101,30 @@ function calculate() {
   const Cplant = Pnew * Ctype * Region;
   const Csmart = Cinfra + ((Nmeters * Cmeters) / UsersPerMeter);
 
-  /* ---------- 3. GROSS FLOWS ---------- */
+  /* ---------- 3. REVENUE FLOWS ---------- */
   const Pnew_kW = Pnew * 1000;
   const cprod_kW = cprod * 1000;
 
-  const PlantGrossAnnual = Pnew_kW * H * Ttariff * 365;                    // new plant gross $/yr
-  const SmartBaseAnnual  = cprod_kW * H * Ttariff * 365;                    // existing system gross $/yr
-  const SmartSavingsAnnual = SmartBaseAnnual * (Ssavings / 100);            // $/yr saved by efficiency
-  const SmartGrossAfterAnnual = SmartBaseAnnual + SmartSavingsAnnual;       // total effective gross after upgrade
+  // Plant revenue (gross)
+  const PlantGrossAnnual = Pnew_kW * H * Ttariff * 365;
 
-  // Totals (gross) for display
-  let totalPlantGross = PlantGrossAnnual * L;
-  let totalSmartGrossAfter = SmartGrossAfterAnnual * L;
-  let totalSmartSavings = SmartSavingsAnnual * L;
+  // Smart grid = only incremental savings
+  const SmartBaseAnnual = cprod_kW * H * Ttariff * 365;
+  const SmartSavingsAnnual = SmartBaseAnnual * (Ssavings / 100);
+  const SmartGrossAfterAnnual = SmartSavingsAnnual; // ✅ Only the incremental savings
 
-  /* ---------- 4. O&M (ASSUMPTIONS) & NET FLOWS ---------- */
-  const OandMplant = PlantGrossAnnual * 0.40;        // 40% O&M for plant
-  const OandMsmart = SmartGrossAfterAnnual * 0.20;   // 20% O&M for smart grid
+  // Totals for display (gross)
+  const totalPlantGross = PlantGrossAnnual * L;
+  const totalSmartSavings = SmartSavingsAnnual * L;
+
+  /* ---------- 4. O&M and NET FLOWS ---------- */
+  const OandMplant = PlantGrossAnnual * 0.4;  // 40% for new plant
+  const OandMsmart = SmartGrossAfterAnnual * 0.2; // 20% for smart grid
 
   const NetPlantAnnual = PlantGrossAnnual - OandMplant;
   const NetSmartAnnual = SmartGrossAfterAnnual - OandMsmart;
 
-  /* ---------- 5. NPV & ROI USING NET FLOWS ---------- */
+  /* ---------- 5. NPV & ROI (NET) ---------- */
   let NPVplant = -Cplant;
   let NPVsmart = -Csmart;
   let totalPlantNet = 0;
@@ -163,14 +137,12 @@ function calculate() {
     totalSmartNet += NetSmartAnnual;
   }
 
-  // ROI based on cumulative net profit over project life
   const ROIplant = ((totalPlantNet - Cplant) / (Cplant || 1)) * 100;
   const ROIsmart = ((totalSmartNet - Csmart) / (Csmart || 1)) * 100;
 
-  // Define formatting options for consistency
   const formattingOptions = { minimumFractionDigits: 2, maximumFractionDigits: 2 };
 
-  /* ---------- 6. Projection helper (NET) ---------- */
+  /* ---------- 6. Projection Table ---------- */
   function projectionAt(years) {
     let npvP = -Cplant, npvS = -Csmart;
     let cumNetP = 0, cumNetS = 0;
@@ -185,7 +157,6 @@ function calculate() {
     return { roiP, roiS, npvP, npvS };
   }
 
-  /* ---------- 7. Long-term projections table (NET) ---------- */
   const projectionYears = [5, 10, 20];
   let projectionsHtml = `<table style="width:100%;border-collapse:collapse;text-align:center;">
     <tr style="background:#eee;font-weight:bold;">
@@ -195,6 +166,7 @@ function calculate() {
       <td>Net NPV (Plant)</td>
       <td>Net NPV (Smart Grid)</td>
     </tr>`;
+
   projectionYears.forEach((yrs) => {
     if (yrs <= L) {
       const { roiP, roiS, npvP, npvS } = projectionAt(yrs);
@@ -211,56 +183,40 @@ function calculate() {
   projectionsHtml += "</table>";
   document.getElementById("projectionOutput").innerHTML = projectionsHtml;
 
-  /* ---------- 8. Time series for charts (NET) ---------- */
-  let npvPlantOverTime = [];
-  let npvSmartOverTime = [];
-  let roiPlantOverTime = [];
-  let roiSmartOverTime = [];
-
-  let npvP_t = -Cplant;
-  let npvS_t = -Csmart;
-  let cumNetPlant = 0;
-  let cumNetSmart = 0;
+  /* ---------- 7. Time Series for Charts ---------- */
+  let npvPlantOverTime = [], npvSmartOverTime = [];
+  let roiPlantOverTime = [], roiSmartOverTime = [];
+  let npvP_t = -Cplant, npvS_t = -Csmart;
+  let cumNetPlant = 0, cumNetSmart = 0;
 
   for (let t = 1; t <= L; t++) {
     const disc = Math.pow(1 + r, t);
     npvP_t += NetPlantAnnual / disc;
     npvS_t += NetSmartAnnual / disc;
-
     cumNetPlant += NetPlantAnnual;
     cumNetSmart += NetSmartAnnual;
-
     npvPlantOverTime.push(npvP_t);
     npvSmartOverTime.push(npvS_t);
-
     roiPlantOverTime.push(((cumNetPlant - Cplant) / (Cplant || 1)) * 100);
     roiSmartOverTime.push(((cumNetSmart - Csmart) / (Csmart || 1)) * 100);
   }
 
-  /* ---------- 9. Charts ---------- */
-
-  // Destroy old charts safely
+  /* ---------- 8. Charts ---------- */
   if (window.npvChart instanceof Chart) window.npvChart.destroy();
   if (window.roiChart instanceof Chart) window.roiChart.destroy();
 
-  // Safely get canvases
   const npvCanvas = document.getElementById("npvChart");
   const roiCanvas = document.getElementById("roiChart");
-  if (!npvCanvas || !roiCanvas) {
-    console.error("Canvas elements not found. Check your HTML IDs (npvChart, roiChart).");
-    return;
-  }
   const ctx1 = npvCanvas.getContext("2d");
   const ctx2 = roiCanvas.getContext("2d");
 
-  // === Chart 1: NPV (NET) ===
   window.npvChart = new Chart(ctx1, {
     type: "line",
     data: {
       labels: Array.from({ length: L }, (_, i) => `Year ${i + 1}`),
       datasets: [
-        { label: "Net NPV – Smart Grid", data: npvSmartOverTime, borderColor: "green", fill: false, tension: 0.1 },
-        { label: "Net NPV – Power Plant", data: npvPlantOverTime, borderColor: "orange", fill: false, tension: 0.1 },
+        { label: "Net NPV – Smart Grid", data: npvSmartOverTime, borderColor: "green", fill: false },
+        { label: "Net NPV – Power Plant", data: npvPlantOverTime, borderColor: "orange", fill: false },
       ],
     },
     options: {
@@ -270,7 +226,6 @@ function calculate() {
     },
   });
 
-  // === Chart 2: ROI (NET, single axis) ===
   const yMin = Math.min(...roiPlantOverTime, ...roiSmartOverTime);
   const yMax = Math.max(...roiPlantOverTime, ...roiSmartOverTime);
   const pad = (yMax - yMin) * 0.1 || 10;
@@ -280,55 +235,36 @@ function calculate() {
     data: {
       labels: Array.from({ length: L }, (_, i) => `Year ${i + 1}`),
       datasets: [
-        { label: "Net ROI – Smart Grid", data: roiSmartOverTime, borderColor: "blue", borderDash: [5, 5], fill: false, tension: 0.1, yAxisID: "y" },
-        { label: "Net ROI – Power Plant", data: roiPlantOverTime, borderColor: "red", borderDash: [5, 5], fill: false, tension: 0.1, yAxisID: "y" },
+        { label: "Net ROI – Smart Grid", data: roiSmartOverTime, borderColor: "blue", fill: false, tension: 0.1 },
+        { label: "Net ROI – Power Plant", data: roiPlantOverTime, borderColor: "red", fill: false, tension: 0.1 },
       ],
     },
     options: {
       responsive: true,
-      plugins: {
-        title: { display: true, text: "Return on Investment (after O&M) Over Time" },
-        legend: { position: "top", labels: { boxWidth: 20, usePointStyle: true } },
-      },
+      plugins: { title: { display: true, text: "Return on Investment (after O&M) Over Time" } },
       scales: {
-        y: {
-          type: "linear",
-          position: "left",
-          title: { display: true, text: "Net ROI (%)" },
-          min: yMin - pad,
-          max: yMax + pad,
-          ticks: { callback: (v) => v + "%" },
-          grid: { drawOnChartArea: true },
-        },
+        y: { type: "linear", title: { display: true, text: "Net ROI (%)" }, min: yMin - pad, max: yMax + pad },
         x: { title: { display: true, text: "Years" } },
       },
     },
   });
 
-  /* ---------- 10. WRITE RESULTS (Display) ---------- */
+  /* ---------- 9. Display Results ---------- */
   const fmt = (n) => n.toLocaleString(undefined, formattingOptions);
 
-  // CapEx results
-  document.getElementById("NewPlantResult").textContent = Cplant ? `$${fmt(Cplant)}` : "--";
-  document.getElementById("UpgradePlantResult").textContent = Csmart ? `$${fmt(Csmart)}` : "--";
+  document.getElementById("NewPlantResult").textContent = `$${fmt(Cplant)}`;
+  document.getElementById("UpgradePlantResult").textContent = `$${fmt(Csmart)}`;
+  document.getElementById("NewPlantRevenueResult").textContent = `$${fmt(totalPlantGross)}`;
+  document.getElementById("AnnualSavingsResult").textContent = `$${fmt(totalSmartSavings)}`;
+  document.getElementById("roiOutput").textContent = `Plant (Net): ${fmt(ROIplant)} % | Smart Grid (Net): ${fmt(ROIsmart)} %`;
+  document.getElementById("npvOutput").textContent = `Plant (Net): $${fmt(NPVplant)} | Smart Grid (Net): $${fmt(NPVsmart)}`;
 
-  // Display gross totals (as your UI labels imply “Total Revenue” and “Savings”)
-  document.getElementById("NewPlantRevenueResult").textContent = totalPlantGross ? `$${fmt(totalPlantGross)}` : "--";
-  document.getElementById("AnnualSavingsResult").textContent = totalSmartSavings ? `$${fmt(totalSmartSavings)}` : "--";
-
-  // Net ROI / Net NPV summary
-  document.getElementById("roiOutput").textContent =
-    `Plant (Net): ${fmt(ROIplant)} % | Smart Grid (Net): ${fmt(ROIsmart)} %`;
-  document.getElementById("npvOutput").textContent =
-    `Plant (Net): $${fmt(NPVplant)} | Smart Grid (Net): $${fmt(NPVsmart)}`;
-
-  /* ---------- 11. Invoke AI report generation ----------
-     NOTE: passing NET totals to the report so the narrative matches the charts */
+  /* ---------- 10. AI Report ---------- */
   generateReport({
     Cplant,
     Csmart,
-    Rplant: totalPlantNet,          // net totals
-    revenuesmart: totalSmartNet,    // net totals
+    Rplant: totalPlantNet,
+    revenuesmart: totalSmartNet,
     ROIplant,
     ROIsmart,
     NPVplant,
@@ -336,15 +272,13 @@ function calculate() {
   });
 }
 
-/* ---------- CLEAR FORM  ---------- */
+/* ---------- CLEAR FORM ---------- */
 function clearForm() {
   document.querySelectorAll("input[type='number']").forEach(el => el.value = "");
   document.getElementById("useCustomCost").checked = false;
   document.getElementById("customCostContainer").style.display = "none";
   document.getElementById("defaultCostContainer").style.display = "block";
-  document.getElementById("regionContainer").style.display = "block";
   document.querySelectorAll("output").forEach(el => el.textContent = "--");
-  document.getElementById("decisionText").textContent =
-    "Decision summary will appear here based on ROI and NPV results.";
+  document.getElementById("decisionText").textContent = "Decision summary will appear here based on ROI and NPV results.";
   document.getElementById("downloadDecisionPdf").style.display = "none";
 }
