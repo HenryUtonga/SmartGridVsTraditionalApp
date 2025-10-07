@@ -1,56 +1,121 @@
+/* ─────────────────────────────
+   GLOBAL BASE STYLES
+───────────────────────────── */
 body {
-  font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   background-color: #f9f9f9;
   padding: 10px;
   color: #333;
+  -webkit-print-color-adjust: exact; /* ensures colors show in PDF */
+  print-color-adjust: exact;
 }
 
+/* Container for the generated report */
 .report-container {
   background-color: #ffffff;
   max-width: 800px;
-  margin: auto;
-  padding: 10px;
+  margin: 0 auto;
+  padding: 12px 18px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
+/* Report Title */
 .report-title {
   background-color: #d0f0c0;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: bold;
   text-align: center;
   padding: 10px;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
   border-radius: 6px;
 }
 
+/* ───── Section Titles ───── */
 .section {
-  margin-bottom: 4px;
+  margin-bottom: 10px;
 }
 
 h3 {
   color: #1e3a8a;
-  margin-bottom: 4px;
-  border-bottom: 2px solid #e0e0e0;
-  padding-bottom: 6px;
+  margin: 6px 0 4px 0;
+  border-bottom: 1.5px solid #e0e0e0;
+  padding-bottom: 3px;
+  font-size: 18px;
 }
 
 h4 {
-  margin-top: 4px;
   color: #2c3e50;
+  margin: 4px 0 2px 0;
+  font-size: 16px;
 }
 
+/* ───── Paragraphs ───── */
+p {
+  line-height: 1.45;
+  text-align: justify;
+  margin: 4px 0;
+  font-size: 14.5px;
+}
+
+/* ───── Tables ───── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 4px;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 6px 8px;
+  text-align: left;
+  font-size: 13.5px;
+}
+
+tr:nth-child(even) {
+  background: #fafafa;
+}
+
+/* ───── Lists ───── */
 ul {
   list-style: none;
   padding-left: 0;
 }
 
 ul li {
-  margin: 6px 0;
+  margin: 4px 0;
   text-align: left;
 }
 
-p {
-  line-height: 1.6;
-  text-align: left;
+/* ───── Print Optimization ───── */
+@media print {
+  body {
+    background: #fff;
+    padding: 0;
+  }
+
+  .report-container {
+    box-shadow: none;
+    border: none;
+    margin: 0;
+    padding: 0 10mm;
+  }
+
+  .report-title {
+    background-color: #d0f0c0 !important;
+    -webkit-print-color-adjust: exact;
+  }
+
+  h3, h4 {
+    page-break-after: avoid;
+    page-break-before: avoid;
+  }
+
+  table, tr, td, th {
+    page-break-inside: avoid;
+  }
+
+  p, ul, table {
+    page-break-inside: avoid;
+  }
 }
