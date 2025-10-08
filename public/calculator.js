@@ -53,14 +53,14 @@ async function downloadDecisionPdf() {
 
   const pageWidth = pdf.internal.pageSize.getWidth();
   const pageHeight = pdf.internal.pageSize.getHeight();
-  const imgWidth = pageWidth - 20; // 10mm margin on each side
+  const imgWidth = pageWidth; // full width
   const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
   let position = 10;
   let heightLeft = imgHeight;
 
   // First page
-  pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight, undefined, 'FAST');
+  pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight, undefined, 'FAST');
   heightLeft -= pageHeight;
 
   // Add new pages if content overflows
