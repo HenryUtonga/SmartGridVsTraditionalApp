@@ -63,8 +63,8 @@ p {
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 4px;
-}
+  margin: 8px 0 12px 0;  /* space before and after */
+  }
 
 th, td {
   border: 1px solid #ccc;
