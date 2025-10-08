@@ -127,8 +127,8 @@ function calculate() {
   const totalSmartSavings = SmartSavingsAnnual * L;
 
   /* ---------- 4. O&M and NET FLOWS ---------- */
-  const OandMplant = PlantGrossAnnual * 0.4;  // 40% for new plant
-  const OandMsmart = SmartGrossAfterAnnual * 0.2; // 20% for smart grid
+  const OandMplant = PlantGrossAnnual * 0.6;  // 40% for new plant
+  const OandMsmart = SmartGrossAfterAnnual * 0.4; // 20% for smart grid
 
   const NetPlantAnnual = PlantGrossAnnual - OandMplant;
   const NetSmartAnnual = SmartGrossAfterAnnual - OandMsmart;
