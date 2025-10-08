@@ -13,11 +13,12 @@ body {
 /* Container for the generated report */
 .report-container {
   background-color: #ffffff;
-  max-width: 800px;
+  width: 794px;              /* A4 width at 96 DPI */
   margin: 0 auto;
-  padding: 12px 18px;
+  padding: 20px 30px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
 }
 
 /* Report Title */
