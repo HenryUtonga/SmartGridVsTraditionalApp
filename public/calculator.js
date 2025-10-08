@@ -40,12 +40,13 @@ async function downloadDecisionPdf() {
   const { jsPDF } = window.jspdf;
 
   // Capture the entire decision area as one large canvas
-  const canvas = await html2canvas(el, {
-    scale: 3,
-    useCORS: true,
-    backgroundColor: "#ffffff",
-    windowWidth: document.body.scrollWidth,
-  });
+ const canvas = await html2canvas(el, {
+  scale: 2,                 // lower scale (no need for 3x)
+  width: 794,               // match CSS width
+  windowWidth: 794,
+  useCORS: true,
+  backgroundColor: "#ffffff"
+});
 
   const imgData = canvas.toDataURL("image/png");
   const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
@@ -59,7 +60,7 @@ async function downloadDecisionPdf() {
   let heightLeft = imgHeight;
 
   // First page
-  pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+  pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight, undefined, 'FAST');
   heightLeft -= pageHeight;
 
   // Add new pages if content overflows
