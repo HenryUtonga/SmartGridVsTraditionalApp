@@ -11,15 +11,17 @@ body {
 }
 
 /* Container for the generated report */
+
 .report-container {
   background-color: #ffffff;
-  width: 794px;                /* exact A4 width at 96 DPI */
-  min-height: 1123px;          /* exact A4 height at 96 DPI */
-  margin: 0;                   /* remove auto-centering */
-   padding: 0 0 12px 0; 
-  border-radius: 0;
-  box-shadow: none;
+  width: 100%;
+  max-width: 794px;      /* upper limit = A4 width */
+  aspect-ratio: 210 / 297; /* keeps A4 proportions visually */
+  margin: 0 auto;
+  padding: 25px 35px;
   box-sizing: border-box;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
 }
 
 /* Report Title */
