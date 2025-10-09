@@ -36,41 +36,41 @@ async function generateReport(metrics) {
 
 // ─── Download decision report as PDF (continuous, proper pagination) ────────────────────────
 async function downloadDecisionPdf() {
-  const el = document.getElementById("decisionText");
+  // Capture the entire formatted A4 report instead of just the inner text
+  const el = document.querySelector(".report-container");
   const { jsPDF } = window.jspdf;
 
-  // Capture at full clarity, no forced width
+  // Capture the container at full clarity and correct A4 scaling
   const canvas = await html2canvas(el, {
     scale: 2,
     useCORS: true,
     backgroundColor: "#ffffff",
     scrollX: 0,
-    scrollY: 0
+    scrollY: 0,
+    windowWidth: el.scrollWidth,
+    windowHeight: el.scrollHeight
   });
 
   const imgData = canvas.toDataURL("image/png");
   const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
 
-  // A4 dimensions (mm)
   const pageWidth = pdf.internal.pageSize.getWidth();
   const pageHeight = pdf.internal.pageSize.getHeight();
 
-  // Convert only for height calculation
+  // convert pixel height to mm
   const imgWidthMm = canvas.width * 0.264583;
   const imgHeightMm = canvas.height * 0.264583;
 
-  // Scale so that the width fits exactly (no double shrink)
+  // scale so width fits exactly
   const ratio = pageWidth / imgWidthMm;
   const scaledHeight = imgHeightMm * ratio;
 
   let position = 0;
   let heightLeft = scaledHeight;
 
-  // Add first page
   pdf.addImage(imgData, "PNG", 0, 0, pageWidth, scaledHeight);
   heightLeft -= pageHeight;
 
-  // Add additional pages if needed
   while (heightLeft > 0) {
     position = heightLeft - scaledHeight;
     pdf.addPage();
@@ -80,7 +80,6 @@ async function downloadDecisionPdf() {
 
   pdf.save("Investment_Report.pdf");
 }
-
 
 function calculate() {
   /* ---------- 1. READ INPUTS ---------- */
