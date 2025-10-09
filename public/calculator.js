@@ -39,7 +39,7 @@ async function downloadDecisionPdf() {
   const el = document.getElementById("decisionText");
   const { jsPDF } = window.jspdf;
 
-  // Capture full visible width at high clarity
+  // Capture at full clarity, no forced width
   const canvas = await html2canvas(el, {
     scale: 2,
     useCORS: true,
@@ -51,43 +51,36 @@ async function downloadDecisionPdf() {
   const imgData = canvas.toDataURL("image/png");
   const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
 
-  // A4 size in mm
+  // A4 dimensions (mm)
   const pageWidth = pdf.internal.pageSize.getWidth();
   const pageHeight = pdf.internal.pageSize.getHeight();
 
-  // Convert pixels to mm (1 px = 0.264583 mm)
+  // Convert only for height calculation
   const imgWidthMm = canvas.width * 0.264583;
   const imgHeightMm = canvas.height * 0.264583;
 
-  // 🔧 Scale to fit A4 *height* instead of forcing full width
-  const scale = Math.min(pageWidth / imgWidthMm, pageHeight / imgHeightMm);
+  // Scale so that the width fits exactly (no double shrink)
+  const ratio = pageWidth / imgWidthMm;
+  const scaledHeight = imgHeightMm * ratio;
 
-  // Apply optional 5 mm margin on all sides
-  const margin = 5;
-  const renderWidth = pageWidth - 2 * margin;
-  const renderHeight = imgHeightMm * scale;
-  const totalPages = Math.ceil(renderHeight / (pageHeight - 2 * margin));
+  let position = 0;
+  let heightLeft = scaledHeight;
 
-  let y = margin;
+  // Add first page
+  pdf.addImage(imgData, "PNG", 0, 0, pageWidth, scaledHeight);
+  heightLeft -= pageHeight;
 
-  // Add pages dynamically with proper slicing
-  for (let i = 0; i < totalPages; i++) {
-    const sourceY = (canvas.height / totalPages) * i;
-    const sliceHeight = canvas.height / totalPages;
-    const slice = document.createElement("canvas");
-    slice.width = canvas.width;
-    slice.height = sliceHeight;
-
-    const ctx = slice.getContext("2d");
-    ctx.drawImage(canvas, 0, -sourceY);
-
-    const imgDataPage = slice.toDataURL("image/png");
-    if (i > 0) pdf.addPage();
-    pdf.addImage(imgDataPage, "PNG", margin, margin, renderWidth, (renderWidth * slice.height) / slice.width);
+  // Add additional pages if needed
+  while (heightLeft > 0) {
+    position = heightLeft - scaledHeight;
+    pdf.addPage();
+    pdf.addImage(imgData, "PNG", 0, position, pageWidth, scaledHeight);
+    heightLeft -= pageHeight;
   }
 
   pdf.save("Investment_Report.pdf");
 }
+
 
 function calculate() {
   /* ---------- 1. READ INPUTS ---------- */
