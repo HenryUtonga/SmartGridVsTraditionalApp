@@ -11,16 +11,14 @@ body {
 }
 
 /* Container for the generated report */
-
 .report-container {
-  background-color: #ffffff;
-  width: 100%;
-  max-width: 794px;      /* upper limit = A4 width */
-  aspect-ratio: 210 / 297; /* keeps A4 proportions visually */
+  background: #fff;
+  width: 794px;        /* A4 width at 96 DPI */
+  min-height: 1123px;  /* A4 height */
   margin: 0 auto;
   padding: 25px 35px;
   box-sizing: border-box;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 6px rgba(0,0,0,0.1);
   border-radius: 6px;
 }
 
