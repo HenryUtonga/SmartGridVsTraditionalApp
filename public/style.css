@@ -14,7 +14,7 @@ body {
 .report-container {
   background: #fff;
   width: 794px;        /* A4 width at 96 DPI */
-  min-height: 1123px;  /* A4 height */
+  min-height: 1073px;  /* A4 height */
   margin: 0 auto;
   padding: 25px 35px;
   box-sizing: border-box;
