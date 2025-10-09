@@ -39,41 +39,58 @@ async function downloadDecisionPdf() {
   const el = document.getElementById("decisionText");
   const { jsPDF } = window.jspdf;
 
-  // Capture the entire decision area as one large canvas
- const canvas = await html2canvas(el, {
-  scale: 2,                 // lower scale (no need for 3x)
-  width: 794,               // match CSS width
-  windowWidth: 794,
-  useCORS: true,
-  backgroundColor: "#ffffff"
-});
+  // Capture element exactly as seen on screen
+  const canvas = await html2canvas(el, {
+    scale: 2,               // good clarity
+    useCORS: true,
+    backgroundColor: "#ffffff",
+    scrollX: 0,
+    scrollY: 0,
+  });
 
   const imgData = canvas.toDataURL("image/png");
-  const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+  const pdf = new jsPDF({
+    orientation: "portrait",
+    unit: "mm",
+    format: "a4"
+  });
 
-  const pageWidth = pdf.internal.pageSize.getWidth();
-  const pageHeight = pdf.internal.pageSize.getHeight();
-  const imgWidth = pageWidth; // full width
-  const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  // A4 dimensions in mm
+  const pageWidth = pdf.internal.pageSize.getWidth();   // 210
+  const pageHeight = pdf.internal.pageSize.getHeight(); // 297
 
-  let position = 10;
-  let heightLeft = imgHeight;
+  // Image dimensions in pixels
+  const imgWidthPx = canvas.width;
+  const imgHeightPx = canvas.height;
 
-  // First page
-  pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight, undefined, 'FAST');
+  // Convert to mm (1 px = 0.264583 mm)
+  const imgWidthMm = imgWidthPx * 0.264583;
+  const imgHeightMm = imgHeightPx * 0.264583;
+
+  // --- SCALE TO FIT PAGE WIDTH COMPLETELY ---
+  const scale = pageWidth / imgWidthMm;
+  const finalHeight = imgHeightMm * scale;
+
+  let yPosition = 0;
+  let heightLeft = finalHeight;
+
+  // First page (full bleed)
+  pdf.addImage(imgData, "PNG", 0, 0, pageWidth, finalHeight, undefined, "FAST");
   heightLeft -= pageHeight;
 
-  // Add new pages if content overflows
+  // If content exceeds one page, add extra pages
   while (heightLeft > 0) {
-    position = heightLeft - imgHeight + 10;
+    yPosition = heightLeft - finalHeight;
     pdf.addPage();
-    pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+    pdf.addImage(imgData, "PNG", 0, yPosition, pageWidth, finalHeight, undefined, "FAST");
     heightLeft -= pageHeight;
   }
 
-  // Save the final file
+  // --- REMOVE ALL WHITE GAPS ---
+  pdf.setDisplayMode(100, "continuous", "UseNone");
   pdf.save("Investment_Report.pdf");
 }
+
 
 
 function calculate() {
