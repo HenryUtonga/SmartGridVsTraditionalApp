@@ -39,59 +39,55 @@ async function downloadDecisionPdf() {
   const el = document.getElementById("decisionText");
   const { jsPDF } = window.jspdf;
 
-  // Capture element exactly as seen on screen
+  // Capture full visible width at high clarity
   const canvas = await html2canvas(el, {
-    scale: 2,               // good clarity
+    scale: 2,
     useCORS: true,
     backgroundColor: "#ffffff",
     scrollX: 0,
-    scrollY: 0,
+    scrollY: 0
   });
 
   const imgData = canvas.toDataURL("image/png");
-  const pdf = new jsPDF({
-    orientation: "portrait",
-    unit: "mm",
-    format: "a4"
-  });
+  const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
 
-  // A4 dimensions in mm
-  const pageWidth = pdf.internal.pageSize.getWidth();   // 210
-  const pageHeight = pdf.internal.pageSize.getHeight(); // 297
+  // A4 size in mm
+  const pageWidth = pdf.internal.pageSize.getWidth();
+  const pageHeight = pdf.internal.pageSize.getHeight();
 
-  // Image dimensions in pixels
-  const imgWidthPx = canvas.width;
-  const imgHeightPx = canvas.height;
+  // Convert pixels to mm (1 px = 0.264583 mm)
+  const imgWidthMm = canvas.width * 0.264583;
+  const imgHeightMm = canvas.height * 0.264583;
 
-  // Convert to mm (1 px = 0.264583 mm)
-  const imgWidthMm = imgWidthPx * 0.264583;
-  const imgHeightMm = imgHeightPx * 0.264583;
+  // 🔧 Scale to fit A4 *height* instead of forcing full width
+  const scale = Math.min(pageWidth / imgWidthMm, pageHeight / imgHeightMm);
 
-  // --- SCALE TO FIT PAGE WIDTH COMPLETELY ---
-  const scale = pageWidth / imgWidthMm;
-  const finalHeight = imgHeightMm * scale;
+  // Apply optional 5 mm margin on all sides
+  const margin = 5;
+  const renderWidth = pageWidth - 2 * margin;
+  const renderHeight = imgHeightMm * scale;
+  const totalPages = Math.ceil(renderHeight / (pageHeight - 2 * margin));
 
-  let yPosition = 0;
-  let heightLeft = finalHeight;
+  let y = margin;
 
-  // First page (full bleed)
-  pdf.addImage(imgData, "PNG", 0, 0, pageWidth, finalHeight, undefined, "FAST");
-  heightLeft -= pageHeight;
+  // Add pages dynamically with proper slicing
+  for (let i = 0; i < totalPages; i++) {
+    const sourceY = (canvas.height / totalPages) * i;
+    const sliceHeight = canvas.height / totalPages;
+    const slice = document.createElement("canvas");
+    slice.width = canvas.width;
+    slice.height = sliceHeight;
 
-  // If content exceeds one page, add extra pages
-  while (heightLeft > 0) {
-    yPosition = heightLeft - finalHeight;
-    pdf.addPage();
-    pdf.addImage(imgData, "PNG", 0, yPosition, pageWidth, finalHeight, undefined, "FAST");
-    heightLeft -= pageHeight;
+    const ctx = slice.getContext("2d");
+    ctx.drawImage(canvas, 0, -sourceY);
+
+    const imgDataPage = slice.toDataURL("image/png");
+    if (i > 0) pdf.addPage();
+    pdf.addImage(imgDataPage, "PNG", margin, margin, renderWidth, (renderWidth * slice.height) / slice.width);
   }
 
-  // --- REMOVE ALL WHITE GAPS ---
-  pdf.setDisplayMode(100, "continuous", "UseNone");
   pdf.save("Investment_Report.pdf");
 }
-
-
 
 function calculate() {
   /* ---------- 1. READ INPUTS ---------- */
